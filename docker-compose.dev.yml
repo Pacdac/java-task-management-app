@@ -8,6 +8,7 @@ services:
     ports:
       - "8080:8080"
       - "35729:35729" # LiveReload port
+      - "5005:5005" # Remote debug port
     depends_on:
       - db
     environment:
@@ -19,6 +20,8 @@ services:
     volumes:
       - ./spring-app/src:/app/src
       - ./spring-app/target:/app/target
+      - maven-repo:/root/.m2
+
   frontend:
     build:
       context: ./angular-app
@@ -28,6 +31,7 @@ services:
     volumes:
       - ./angular-app/src:/app/src
       - ./angular-app/public:/app/public
+      - ./angular-app/node_modules:/app/node_modules
     depends_on:
       - backend
 
@@ -39,3 +43,9 @@ services:
       - POSTGRES_DB=taskdb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
+  maven-repo:
