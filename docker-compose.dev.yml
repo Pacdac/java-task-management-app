@@ -2,25 +2,26 @@ version: '3.8'
 
 services:
   backend:
+    container_name: backend
     build:
       context: ./spring-app
       dockerfile: Dockerfile.dev
     ports:
-      - "8080:8080"
+      - "8080:8080" # Application port
       - "35729:35729" # LiveReload port
       - "5005:5005" # Remote debug port
-    depends_on:
-      - db
+    volumes:
+      - ./spring-app:/app
+      - ~/.m2:/root/.m2
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/taskdb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
-      - SPRING_DEVTOOLS_RESTART_ENABLED=true
-      - SPRING_DEVTOOLS_LIVERELOAD_ENABLED=true
-    volumes:
-      - ./spring-app/src:/app/src
-      - ./spring-app/target:/app/target
-      - maven-repo:/root/.m2
+      - SPRING_PROFILES_ACTIVE=dev
+      - JAVA_OPTS=-Dspring.devtools.restart.enabled=true -Dspring.devtools.livereload.enabled=true
+    depends_on:
+      - db
+    restart: unless-stopped
 
   frontend:
     build:
@@ -31,7 +32,6 @@ services:
     volumes:
       - ./angular-app/src:/app/src
       - ./angular-app/public:/app/public
-      - ./angular-app/node_modules:/app/node_modules
     depends_on:
       - backend
 

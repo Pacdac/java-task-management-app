@@ -1,5 +1,5 @@
 # Development Dockerfile for Angular
-FROM node:23-slim
+FROM node:20-slim
 
 # Set the working directory in the container
 WORKDIR /app
@@ -9,6 +9,7 @@ COPY package*.json ./
 
 # Install dependencies
 RUN npm install
+RUN npm install -g @angular/cli
 
 # Copy the app source (will be overridden by volume mount in docker-compose)
 COPY . .

@@ -1,29 +1,14 @@
-# Development Dockerfile with hot-reload capabilities
-FROM maven:3.9.6-eclipse-temurin-17
+# Use Maven with OpenJDK 17
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 
-# Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the pom.xml for dependency resolution
-COPY pom.xml .
+# Copy the entire backend directory into the container
+COPY . .
 
-# Download all required dependencies into one layer
-RUN mvn dependency:go-offline -B
-
-# Copy the project source
-COPY src ./src
-COPY mvnw .
-COPY mvnw.cmd .
-COPY .mvn ./.mvn
-
-# Make the Maven wrapper executable
-RUN chmod +x ./mvnw
-
-# Package the application with dev tools
-RUN mvn package -DskipTests
-
-# Enable remote debugging and enable hot swap with dev tools
-EXPOSE 8080 35729 5005
-
-# Run the application with devtools
-CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.jvmArguments='-XX:+AllowEnhancedClassRedefinition -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005'"]
+# Run the Spring Boot application with DevTools enabled
+CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=dev", \
+    "-Dspring.devtools.restart.enabled=true", \
+    "-Dspring.devtools.livereload.enabled=true", \
+    "-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"]

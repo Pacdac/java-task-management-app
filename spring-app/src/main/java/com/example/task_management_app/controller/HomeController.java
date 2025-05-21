@@ -12,10 +12,11 @@ public class HomeController {
     public Map<String, String> home() {
         Map<String, String> response = new HashMap<>();
         response.put("message", "Welcome to Task Management App API");
+        response.put("version", "1.0.0");
         response.put("status", "running");
         return response;
     }
-    
+
     @GetMapping("/api/status")
     public Map<String, String> status() {
         Map<String, String> status = new HashMap<>();
