@@ -44,6 +44,10 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
+    @NotBlank
+    @Column(name = "role", nullable = false)
+    private String role = "USER"; // Default role
+
     @Column(name = "created_at")
     private OffsetDateTime createdAt;
 

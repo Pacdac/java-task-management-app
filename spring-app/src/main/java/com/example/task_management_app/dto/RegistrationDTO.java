@@ -6,14 +6,11 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.OffsetDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
-
-    private Integer id;
+public class RegistrationDTO {
 
     @NotBlank(message = "Username is required")
     @Size(max = 50, message = "Username must be less than 50 characters")
@@ -24,17 +21,12 @@ public class UserDTO {
     @Size(max = 100, message = "Email must be less than 100 characters")
     private String email;
 
-    // Password field used for creation/updates
+    @NotBlank(message = "Password is required")
     private String password;
 
     @Size(max = 50, message = "First name must be less than 50 characters")
     private String firstName;
+
     @Size(max = 50, message = "Last name must be less than 50 characters")
     private String lastName;
-
-    private String role;
-
-    private OffsetDateTime createdAt;
-
-    private OffsetDateTime updatedAt;
 }

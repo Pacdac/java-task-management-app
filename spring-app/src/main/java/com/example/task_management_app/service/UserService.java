@@ -107,13 +107,16 @@ public class UserService {
         if (!existingUser.getEmail().equals(userDTO.getEmail()) &&
                 userRepository.existsByEmail(userDTO.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
-        }
-
-        // Update fields
+        } // Update fields
         existingUser.setUsername(userDTO.getUsername());
         existingUser.setEmail(userDTO.getEmail());
         existingUser.setFirstName(userDTO.getFirstName());
         existingUser.setLastName(userDTO.getLastName());
+
+        // Update role if provided
+        if (userDTO.getRole() != null && !userDTO.getRole().isEmpty()) {
+            existingUser.setRole(userDTO.getRole());
+        }
 
         // Update password if provided
         if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
@@ -150,6 +153,7 @@ public class UserService {
         dto.setEmail(user.getEmail());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
+        dto.setRole(user.getRole());
         dto.setCreatedAt(user.getCreatedAt());
         dto.setUpdatedAt(user.getUpdatedAt());
         // Don't include password in DTO for security
@@ -174,6 +178,13 @@ public class UserService {
         user.setEmail(userDTO.getEmail());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
+
+        // Set role if provided, otherwise default to "USER"
+        if (userDTO.getRole() != null && !userDTO.getRole().isEmpty()) {
+            user.setRole(userDTO.getRole());
+        } else {
+            user.setRole("USER");
+        }
 
         return user;
     }
