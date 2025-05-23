@@ -1,0 +1,16 @@
+<header class="header">
+  <div class="logo">
+    <a routerLink="/">Task Management App</a>
+  </div>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item"><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+      <li class="nav-item"><a routerLink="/tasks" routerLinkActive="active">Tasks</a></li>
+      <!-- Show these links only when user is NOT logged in -->
+      <li class="nav-item auth-link"><a routerLink="/auth/login" routerLinkActive="active">Login</a></li>
+      <li class="nav-item auth-link"><a routerLink="/auth/register" routerLinkActive="active">Register</a></li>
+      <!-- Show this link only when user is logged in -->
+      <li class="nav-item auth-link"><a href="#" (click)="logout($event)">Logout</a></li>
+    </ul>
+  </nav>
+</header>
