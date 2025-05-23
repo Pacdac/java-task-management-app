@@ -30,7 +30,144 @@ http://localhost:8080/api
 
 ## Authentication
 
-The API currently uses basic application-level security. JWT authentication will be implemented in future releases.
+The API uses JWT (JSON Web Token) based authentication. To access protected endpoints, you need to:
+
+1. Register a user or use an existing account
+2. Authenticate with your credentials to receive a JWT token
+3. Include the token in the Authorization header for subsequent requests
+
+### Authentication Endpoints
+
+#### Registration
+
+To use the API, first register a user account.
+
+- **URL**: `/api/auth/register`
+- **Method**: `POST`
+- **Request Body**: Registration data including credentials
+- **Example Request**:
+
+```json
+{
+  "username": "marksmith",
+  "email": "mark@example.com",
+  "password": "securepassword123",
+  "firstName": "Mark",
+  "lastName": "Smith"
+}
+```
+
+- **Response**: Created user object (without password)
+- **Notes**:
+  - Passwords are automatically hashed and stored securely
+  - Users are assigned the `USER` role by default
+
+#### Login
+
+Authenticates a user and returns a JWT token.
+
+- **URL**: `/api/auth/login`
+- **Method**: `POST`
+- **Request Body**: Authentication credentials
+- **Example Request**:
+
+```json
+{
+  "username": "johndoe",
+  "password": "password123"
+}
+```
+
+- **Response**: JWT token
+- **Example Response**:
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huZG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE1MTYyMzkwMjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+}
+```
+
+### Using JWT Tokens
+
+After receiving a token, include it in the `Authorization` header for all subsequent API requests:
+
+```
+Authorization: Bearer <your_jwt_token>
+```
+
+#### JWT Token Details
+
+- **Expiration**: Tokens expire after 24 hours, after which you'll need to authenticate again
+- **Token Format**: Standard JWT with header, payload, and signature
+- **Claims**: Contains user's username and roles as claims
+- **Security**: Tokens are signed with HMAC-SHA256 to prevent tampering
+
+#### Protected Endpoints
+
+All API endpoints except for the following require a valid JWT token:
+
+- `/` (root endpoint)
+- `/api/auth/**` (authentication endpoints)
+
+#### Error Responses
+
+When authentication fails, you may receive the following responses:
+
+- **401 Unauthorized**: Invalid or expired token
+- **403 Forbidden**: Valid token but insufficient permissions for the requested resource
+
+### Security Roles
+
+Users have different roles which determine their access privileges:
+
+- `USER`: Standard user with access to basic task operations
+- `ADMIN`: Administrator with access to all operations including admin-specific endpoints
+
+### Authentication Examples
+
+#### cURL Examples
+
+**Login and extract token:**
+
+```bash
+# Login and get token
+curl -X POST "http://localhost:8080/api/auth/login" \
+  -H "Content-Type: application/json" \
+  -d '{"username": "johndoe", "password": "password123"}' | jq -r '.token'
+```
+
+**Using the token to access a protected endpoint:**
+
+```bash
+# Set token as variable (replace with your actual token)
+TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+# Access protected endpoint
+curl -X GET "http://localhost:8080/api/tasks" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+#### Postman Setup
+
+1. **Create a Login Request**:
+
+   - Create a POST request to `/api/auth/login`
+   - Set body to raw JSON with username and password
+   - Add a Test script to extract and store the token:
+
+   ```javascript
+   let responseJson = pm.response.json();
+   if (responseJson.token) {
+     pm.environment.set("jwtToken", responseJson.token);
+   }
+   ```
+
+2. **Use Token in Subsequent Requests**:
+   - In your request headers, add:
+   ```
+   Authorization: Bearer {{jwtToken}}
+   ```
+   - This uses the environment variable set from the login request
 
 ## Task Endpoints
 
