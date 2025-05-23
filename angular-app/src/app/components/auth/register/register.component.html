@@ -1,1 +1,72 @@
-<p>register works!</p>
+<div class="register-container">
+  <div class="form-container">
+    <h2>Create an Account</h2>
+
+    <form (ngSubmit)="onSubmit()">
+      <!-- Error alert -->
+      <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="registerForm.username"
+          class="form-control"
+          placeholder="Choose a username"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="registerForm.email"
+          class="form-control"
+          placeholder="Enter your email"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="registerForm.password"
+          class="form-control"
+          placeholder="Create a password"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          [(ngModel)]="registerForm.confirmPassword"
+          class="form-control"
+          placeholder="Confirm your password"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" [disabled]="loading">
+          {{ loading ? "Creating account..." : "Register" }}
+        </button>
+      </div>
+
+      <div class="login-link">
+        Already have an account? <a routerLink="/auth/login">Login here</a>
+      </div>
+    </form>
+  </div>
+</div>

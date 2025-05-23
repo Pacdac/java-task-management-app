@@ -1,0 +1,143 @@
+.task-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.task-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.task-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #34495e;
+}
+
+.task-badges {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.priority-high {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.priority-medium {
+  background-color: #f39c12;
+  color: white;
+}
+
+.priority-low {
+  background-color: #3498db;
+  color: white;
+}
+
+.status-todo {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.status-in_progress, .status-inprogress {
+  background-color: #2980b9;
+  color: white;
+}
+
+.status-done, .status-completed {
+  background-color: #27ae60;
+  color: white;
+}
+
+.task-description {
+  flex: 1;
+  margin: 0.5rem 0 1rem;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  overflow-wrap: break-word;
+}
+
+.task-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-due {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+}
+
+.task-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.status-select {
+  padding: 0.35rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.btn {
+  display: inline-block;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #3498db;
+  border-color: #3498db;
+}
+
+.btn-secondary {
+  color: #fff;
+  background-color: #7f8c8d;
+  border-color: #7f8c8d;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.7rem;
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #e74c3c;
+  border-color: #e74c3c;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.7rem;
+}
+
+.btn-primary:hover, .btn-danger:hover, .btn-secondary:hover {
+  opacity: 0.9;
+}

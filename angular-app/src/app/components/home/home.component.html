@@ -1,1 +1,70 @@
-<p>home works!</p>
+<div class="home-container">
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Manage Your Tasks Efficiently</h1>
+      <p>
+        A simple and intuitive task management application to help you stay
+        organized and boost productivity.
+      </p>
+      <div class="cta-buttons" *ngIf="!isAuthenticated">
+        <a routerLink="/auth/register" class="btn btn-primary">Get Started</a>
+        <a routerLink="/auth/login" class="btn btn-secondary">Login</a>
+      </div>
+
+      <div class="cta-buttons" *ngIf="isAuthenticated">
+        <a routerLink="/tasks" class="btn btn-primary">View Tasks</a>
+        <a routerLink="/auth/logout" class="btn btn-secondary">Logout</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2>Key Features</h2>
+    <div class="feature-cards">
+      <div class="feature-card">
+        <div class="icon">📝</div>
+        <h3>Task Creation</h3>
+        <p>
+          Create and organize tasks with priorities, due dates, and categories.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">👥</div>
+        <h3>Collaboration</h3>
+        <p>Share tasks with team members and collaborate effectively.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📊</div>
+        <h3>Progress Tracking</h3>
+        <p>Track task completion and monitor your productivity.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works">
+    <h2>How It Works</h2>
+    <ol class="steps">
+      <li>
+        <span class="step-number">1</span>
+        <div class="step-content">
+          <h3>Create an Account</h3>
+          <p>Sign up for free and set up your profile.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step-number">2</span>
+        <div class="step-content">
+          <h3>Add Your Tasks</h3>
+          <p>Create tasks with all necessary details.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step-number">3</span>
+        <div class="step-content">
+          <h3>Stay Organized</h3>
+          <p>Manage and track your tasks efficiently.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+</div>

@@ -1,0 +1,36 @@
+<div class="task-card">
+  <div class="task-header">
+    <h3>{{ task.title }}</h3>
+    <div class="task-badges">
+      <span class="badge priority-{{ getSafePriorityClass(task.priority) }}">{{
+        task.priority
+      }}</span>
+      <span class="badge status-{{ getSafeStatusClass(task.status) }}">{{
+        formatStatus(task.status)
+      }}</span>
+    </div>
+  </div>
+
+  <p class="task-description">{{ task.description }}</p>
+  <div class="task-footer">
+    <div class="task-due" *ngIf="task.dueDate">
+      Due: {{ task.dueDate | date : "mediumDate" }}
+    </div>
+
+    <div class="task-actions">
+      <select
+        [ngModel]="task.status"
+        (ngModelChange)="onStatusChange($event)"
+        class="status-select"
+      >
+        <option value="TODO">To Do</option>
+        <option value="IN_PROGRESS">In Progress</option>
+        <option value="DONE">Done</option>
+      </select>
+
+      <button class="btn btn-secondary" (click)="onEdit()">Edit</button>
+
+      <button class="btn btn-danger" (click)="onDelete()">Delete</button>
+    </div>
+  </div>
+</div>

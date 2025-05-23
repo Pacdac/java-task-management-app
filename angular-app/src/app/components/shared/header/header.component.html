@@ -4,13 +4,39 @@
   </div>
   <nav class="nav">
     <ul class="nav-list">
-      <li class="nav-item"><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
-      <li class="nav-item"><a routerLink="/tasks" routerLinkActive="active">Tasks</a></li>
-      <!-- Show these links only when user is NOT logged in -->
-      <li class="nav-item auth-link"><a routerLink="/auth/login" routerLinkActive="active">Login</a></li>
-      <li class="nav-item auth-link"><a routerLink="/auth/register" routerLinkActive="active">Register</a></li>
-      <!-- Show this link only when user is logged in -->
-      <li class="nav-item auth-link"><a href="#" (click)="logout($event)">Logout</a></li>
+      <li class="nav-item">
+        <a
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Home</a
+        >
+      </li>
+      <!-- Show Tasks link only when user is logged in -->
+      <li class="nav-item" *ngIf="isAuthenticated">
+        <a routerLink="/tasks" routerLinkActive="active">Tasks</a>
+      </li>
+
+      <!-- Authentication links -->
+      <ng-container *ngIf="!isAuthenticated">
+        <!-- Show these links only when user is NOT logged in -->
+        <li class="nav-item auth-link">
+          <a routerLink="/auth/login" routerLinkActive="active">Login</a>
+        </li>
+        <li class="nav-item auth-link">
+          <a routerLink="/auth/register" routerLinkActive="active">Register</a>
+        </li>
+      </ng-container>
+
+      <ng-container *ngIf="isAuthenticated">
+        <!-- Show these links only when user is logged in -->
+        <li class="nav-item auth-link user-greeting">
+          <span>Welcome, {{ username }}</span>
+        </li>
+        <li class="nav-item auth-link">
+          <a href="#" (click)="logout($event)">Logout</a>
+        </li>
+      </ng-container>
     </ul>
   </nav>
 </header>
