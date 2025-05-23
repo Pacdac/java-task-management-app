@@ -31,3 +31,14 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Sensitive Configuration ###
+**/application-dev.properties
+**/application-prod.properties
+**/application-local.properties
+**/secrets.properties
+.env
+*.env
+.env.local
+.env.development
+.env.production
