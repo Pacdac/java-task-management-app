@@ -12,13 +12,15 @@ services:
       - "5005:5005" # Remote debug port
     volumes:
       - ./spring-app:/app
-      - ~/.m2:/root/.m2
+      - ~/.m2:/root/.m2    
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/taskdb
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRES_DB:-taskdb}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER:-postgres}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:-postgres}
       - SPRING_PROFILES_ACTIVE=dev
       - JAVA_OPTS=-Dspring.devtools.restart.enabled=true -Dspring.devtools.livereload.enabled=true
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION:-86400000}
     depends_on:
       - db
     restart: unless-stopped
@@ -34,15 +36,14 @@ services:
       - ./angular-app/public:/app/public
     depends_on:
       - backend
-
   db:
     build: ./db
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_DB=taskdb
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=${POSTGRES_DB:-taskdb}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
