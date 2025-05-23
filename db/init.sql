@@ -9,7 +9,8 @@ CREATE TABLE users (
     first_name VARCHAR(50),
     last_name VARCHAR(50),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    role VARCHAR(20) DEFAULT 'USER' -- e.g., admin, user, etc.
 );
 
 -- Create task_status table
