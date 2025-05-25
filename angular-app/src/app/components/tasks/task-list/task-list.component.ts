@@ -116,9 +116,6 @@ export class TaskListComponent implements OnInit, OnDestroy {
       this.error = 'Task ID is required';
       return;
     }
-    if (!confirm('Are you sure you want to delete this task?')) {
-      return;
-    }
 
     this.loading = true;
     this.taskService
@@ -181,11 +178,11 @@ export class TaskListComponent implements OnInit, OnDestroy {
     this.formMode = 'create';
     this.showTaskForm = true;
   }
-
   openEditTaskForm(task: Task): void {
-    this.taskForEdit = { ...task };
-    this.formMode = 'edit';
-    this.showTaskForm = true;
+    // Now that we have inline editing, we can handle the edit directly
+    // or optionally still use the modal form - for now let's handle it inline
+    // So this method will be used to save the edited task
+    this.updateExistingTask(task);
   }
 
   closeTaskForm(): void {
