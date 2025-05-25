@@ -25,7 +25,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
     title: '',
     description: '',
     status: 'TODO',
-    priority: 'MEDIUM',
+    priority: 3,
   };
   // For task editing and creation
   taskForEdit: Task | null = null;
@@ -77,6 +77,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
         },
       });
   }
+
   onTaskStatusChange(event: {
     task: Task;
     status: 'TODO' | 'IN_PROGRESS' | 'DONE';
@@ -111,6 +112,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
         }
       });
   }
+
   onDeleteTask(id: number | undefined): void {
     if (!id) {
       this.error = 'Task ID is required';
@@ -136,6 +138,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
         this.tasks = this.tasks.filter((task) => task.id !== id);
       });
   }
+
   get filteredTasks(): Task[] {
     return this.tasks.filter((task) => {
       // Filter by status
@@ -168,16 +171,18 @@ export class TaskListComponent implements OnInit, OnDestroy {
       return true;
     });
   }
+
   openCreateTaskForm(): void {
     this.taskForEdit = {
       title: '',
       description: '',
       status: 'TODO',
-      priority: 'MEDIUM',
+      priority: 3,
     };
     this.formMode = 'create';
     this.showTaskForm = true;
   }
+
   openEditTaskForm(task: Task): void {
     // Now that we have inline editing, we can handle the edit directly
     // or optionally still use the modal form - for now let's handle it inline

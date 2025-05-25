@@ -16,7 +16,7 @@ export class TaskFormComponent {
     title: '',
     description: '',
     status: 'TODO',
-    priority: 'MEDIUM',
+    priority: 3,
   };
 
   @Output() save = new EventEmitter<Task>();

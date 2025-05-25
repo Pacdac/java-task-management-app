@@ -24,12 +24,24 @@ export class TaskItemComponent {
   editForm: Task = {} as Task;
 
   // Helper methods for template
-  getSafePriorityClass(priority: any): string {
-    if (!priority) return 'low';
-    return (priority + '').toLowerCase();
+  getPriorityString(priority: number): string {
+    switch (priority) {
+      case 1:
+        return 'lowest';
+      case 2:
+        return 'low';
+      case 3:
+        return 'medium';
+      case 4:
+        return 'high';
+      case 5:
+        return 'highest';
+      default:
+        return 'unknown';
+    }
   }
 
-  getSafeStatusClass(status: any): string {
+  getSafeStatusClass(status: string): string {
     if (!status) return 'todo';
     return (status + '').toLowerCase();
   }

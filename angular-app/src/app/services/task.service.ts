@@ -9,7 +9,7 @@ export interface Task {
   description: string;
   status: 'TODO' | 'IN_PROGRESS' | 'DONE';
   dueDate?: string;
-  priority: 'LOW' | 'MEDIUM' | 'HIGH';
+  priority: number;
   userId?: number;
 }
 
@@ -51,7 +51,7 @@ export class TaskService {
       description: task.description || '',
       status: this.normalizeStatus(task.status),
       dueDate: task.dueDate || undefined,
-      priority: this.normalizePriority(task.priority),
+      priority: task.priority,
       userId: task.userId ? Number(task.userId) : undefined,
     };
   }
@@ -64,23 +64,5 @@ export class TaskService {
       return 'IN_PROGRESS';
     if (statusStr === 'DONE' || statusStr === 'COMPLETED') return 'DONE';
     return 'TODO'; // Default
-  }
-
-  private normalizePriority(priority: any): 'LOW' | 'MEDIUM' | 'HIGH' {
-    if (!priority) return 'MEDIUM';
-
-    // Handle numeric priorities (1=LOW, 2=MEDIUM, 3=HIGH)
-    if (typeof priority === 'number' || !isNaN(Number(priority))) {
-      const priorityNum = Number(priority);
-      if (priorityNum === 1) return 'LOW';
-      if (priorityNum === 3) return 'HIGH';
-      return 'MEDIUM'; // Default for 2 or unknown numbers
-    }
-
-    // Handle string priorities
-    const priorityStr = (priority + '').toUpperCase();
-    if (priorityStr === 'LOW') return 'LOW';
-    if (priorityStr === 'HIGH') return 'HIGH';
-    return 'MEDIUM'; // Default
   }
 }
