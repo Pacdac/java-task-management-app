@@ -6,12 +6,13 @@ import { Router } from '@angular/router';
 interface AuthResponse {
   token: string;
   username: string;
-  roles?: string[];
+  authorities?: { authority: string }[];
 }
 
 interface User {
   username: string;
   roles?: string[];
+  authorities?: { authority: string }[];
 }
 
 interface RegisterRequest {
@@ -59,7 +60,6 @@ export class AuthService {
       .post<AuthResponse>(`${this.apiUrl}/register`, registerData)
       .pipe(tap((response) => this.handleAuthentication(response)));
   }
-
   login(loginData: LoginRequest): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${this.apiUrl}/login`, loginData)
@@ -78,8 +78,12 @@ export class AuthService {
     return localStorage.getItem(this.tokenKey);
   }
   private handleAuthentication(response: AuthResponse): void {
-    const { token, username, roles } = response;
-    const user: User = { username, roles };
+    const { token, username, authorities } = response;
+
+    // Extract role names from authorities array
+    const roles = authorities?.map((auth) => auth.authority) || [];
+
+    const user: User = { username, roles, authorities };
 
     localStorage.setItem(this.tokenKey, token);
     localStorage.setItem(this.userKey, JSON.stringify(user));
@@ -91,9 +95,12 @@ export class AuthService {
   isLoggedIn(): boolean {
     return this.isAuthenticatedSubject.value;
   }
-
   isAdmin(): boolean {
     const user = this.currentUserSubject.value;
-    return user?.roles?.includes('ROLE_ADMIN') || false;
+    if (!user || !user.roles) {
+      return false;
+    }
+
+    return user.roles.includes('ROLE_ADMIN');
   }
 }
