@@ -6,10 +6,12 @@ import { Router } from '@angular/router';
 interface AuthResponse {
   token: string;
   username: string;
+  roles?: string[];
 }
 
 interface User {
   username: string;
+  roles?: string[];
 }
 
 interface RegisterRequest {
@@ -75,15 +77,23 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
-
   private handleAuthentication(response: AuthResponse): void {
-    const { token, username } = response;
-    const user: User = { username };
+    const { token, username, roles } = response;
+    const user: User = { username, roles };
 
     localStorage.setItem(this.tokenKey, token);
     localStorage.setItem(this.userKey, JSON.stringify(user));
 
     this.currentUserSubject.next(user);
     this.isAuthenticatedSubject.next(true);
+  }
+
+  isLoggedIn(): boolean {
+    return this.isAuthenticatedSubject.value;
+  }
+
+  isAdmin(): boolean {
+    const user = this.currentUserSubject.value;
+    return user?.roles?.includes('ROLE_ADMIN') || false;
   }
 }
