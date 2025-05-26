@@ -1,1 +1,23 @@
-<p>admin-dashboard works!</p>
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>Admin Dashboard</h1>
+    <p>
+      Welcome to the admin dashboard,
+      {{ (authService.currentUser$ | async)?.username || "Admin" }}!
+    </p>
+  </div>
+
+  <div class="admin-cards">
+    <div class="admin-card" routerLink="/admin/priorities">
+      <div class="card-icon">🏷️</div>
+      <h3>Priorities Management</h3>
+      <p>Create, edit, or delete task priorities</p>
+    </div>
+
+    <div class="admin-card" routerLink="/admin/statuses">
+      <div class="card-icon">📊</div>
+      <h3>Statuses Management</h3>
+      <p>Create, edit, or delete task statuses</p>
+    </div>
+  </div>
+</div>

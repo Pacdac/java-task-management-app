@@ -1,1 +1,158 @@
-<p>status-management works!</p>
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>Status Management</h1>
+    <p>Create, edit, and delete task statuses</p>
+    <a routerLink="/admin" class="back-link">← Back to Admin Dashboard</a>
+  </div>
+
+  <div class="actions-bar">
+    <button class="btn btn-primary" (click)="toggleAddForm()">
+      {{ isAdding ? "Cancel" : "Add New Status" }}
+    </button>
+  </div>
+
+  <!-- Add Status Form -->
+  <div class="add-form" *ngIf="isAdding">
+    <h2>Add New Status</h2>
+    <form (submit)="addStatus()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          [(ngModel)]="newStatus.name"
+          name="name"
+          required
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input
+          type="text"
+          id="description"
+          [(ngModel)]="newStatus.description"
+          name="description"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="color">Color</label>
+        <div class="color-input-container">
+          <input
+            type="color"
+            id="color"
+            [(ngModel)]="newStatus.color"
+            name="color"
+            class="form-control color-picker"
+          />
+          <input
+            type="text"
+            [(ngModel)]="newStatus.color"
+            name="colorText"
+            class="form-control color-text"
+          />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-success">Add Status</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="toggleAddForm()"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Statuses List -->
+  <div class="table-container">
+    <table class="statuses-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Color</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let status of statuses">
+          <!-- View Mode -->
+          <ng-container *ngIf="editingStatus?.id !== status.id">
+            <td>{{ status.id }}</td>
+            <td>{{ status.name }}</td>
+            <td>{{ status.description }}</td>
+            <td>
+              <div
+                class="color-preview"
+                [style.background-color]="status.color"
+              ></div>
+              {{ status.color }}
+            </td>
+            <td class="action-cell">
+              <button
+                class="btn btn-sm btn-primary"
+                (click)="startEdit(status)"
+              >
+                Edit
+              </button>
+              <button
+                class="btn btn-sm btn-danger"
+                (click)="deleteStatus(status.id)"
+              >
+                Delete
+              </button>
+            </td>
+          </ng-container>
+          <!-- Edit Mode -->
+          <ng-container *ngIf="editingStatus?.id === status.id">
+            <td>{{ status.id }}</td>
+            <td>
+              <input
+                type="text"
+                [(ngModel)]="editingStatus!.name"
+                class="form-control"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                [(ngModel)]="editingStatus!.description"
+                class="form-control"
+              />
+            </td>
+            <td>
+              <div class="color-input-container">
+                <input
+                  type="color"
+                  [(ngModel)]="editingStatus!.color"
+                  class="form-control color-picker"
+                />
+                <input
+                  type="text"
+                  [(ngModel)]="editingStatus!.color"
+                  class="form-control color-text"
+                />
+              </div>
+            </td>
+            <td class="action-cell">
+              <button class="btn btn-sm btn-success" (click)="saveStatus()">
+                Save
+              </button>
+              <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">
+                Cancel
+              </button>
+            </td>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

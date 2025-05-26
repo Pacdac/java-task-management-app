@@ -1,0 +1,192 @@
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.admin-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.admin-header h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.back-link:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+.actions-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.add-form {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.add-form h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.color-input-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.color-picker {
+  width: 100px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+.color-text {
+  flex: 1;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-sm {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+
+.btn-secondary {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #7f8c8d;
+}
+
+.btn-success {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #27ae60;
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.priorities-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.priorities-table th,
+.priorities-table td {
+  padding: 1rem;
+  text-align: left;
+}
+
+.priorities-table th {
+  background-color: #3498db;
+  color: white;
+  font-weight: 500;
+}
+
+.priorities-table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.priorities-table tr:nth-child(odd) {
+  background-color: white;
+}
+
+.priorities-table tr:hover {
+  background-color: #f1f2f6;
+}
+
+.color-preview {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+  border: 1px solid #ddd;
+}
+
+.action-cell {
+  display: flex;
+  gap: 0.5rem;
+}

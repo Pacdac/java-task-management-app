@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class HeaderComponent implements OnInit {
   isAuthenticated = false;
+  isAdmin = false;
   username: string | null = null;
 
   constructor(private authService: AuthService) {}
@@ -19,6 +20,10 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.authService.isAuthenticated$.subscribe((isAuth) => {
       this.isAuthenticated = isAuth;
+      // Check admin status whenever authentication changes
+      this.isAdmin = this.authService.isAdmin();
+      console.log('User authentication status:', this.isAuthenticated);
+      console.log('User admin status:', this.isAdmin);
     });
 
     this.authService.currentUser$.subscribe((user) => {

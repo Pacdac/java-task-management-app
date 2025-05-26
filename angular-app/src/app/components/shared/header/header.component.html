@@ -17,6 +17,11 @@
         <a routerLink="/tasks" routerLinkActive="active">Tasks</a>
       </li>
 
+      <!-- Show Admin link only for admin users -->
+      <li class="nav-item" *ngIf="isAuthenticated && isAdmin">
+        <a routerLink="/admin" routerLinkActive="active">Admin</a>
+      </li>
+
       <!-- Authentication links -->
       <ng-container *ngIf="!isAuthenticated">
         <!-- Show these links only when user is NOT logged in -->
