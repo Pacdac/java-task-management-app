@@ -6,6 +6,7 @@ A full-stack task management application built with Spring Boot and Angular.
 
 - User authentication with JWT
 - Task creation, assignment, and management
+- Admin dashboard for priority, status and user management
 - Role-based access control
 - RESTful API design
 
@@ -27,7 +28,7 @@ A full-stack task management application built with Spring Boot and Angular.
 
 1. Clone this repository
 
-2. Create an environment file `.env`
+2. Create an environment file `.env` (see .env.example for reference)
 
 3. Edit the `.env` file to set your environment-specific values
 
@@ -53,6 +54,7 @@ docker-compose -f docker-compose.dev.yml up
 ## API Documentation
 
 API documentation is available at [API-DOCUMENTATION.md](spring-app/API-DOCUMENTATION.md)
+It includes a Postman collection you can import.
 
 ## License
 
