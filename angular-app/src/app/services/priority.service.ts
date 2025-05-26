@@ -47,23 +47,18 @@ export class PriorityService {
       displayOrder: 3,
     },
   ];
-
   constructor(private http: HttpClient) {
-    console.log('PriorityService initialized');
     this.loadPriorities().subscribe(
-      (priorities) =>
-        console.log('Priorities loaded in constructor:', priorities.length),
+      () => {},
       (error) => console.error('Error loading priorities:', error)
     );
   }
-
   /**
    * Load all priorities from the backend
    */
   loadPriorities(): Observable<Priority[]> {
     return this.http.get<Priority[]>(this.apiUrl).pipe(
       map((priorities) => {
-        console.log('Loaded priorities from backend:', priorities);
         this.prioritiesSubject.next(priorities);
         return priorities;
       })

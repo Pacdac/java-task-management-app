@@ -22,7 +22,7 @@ export interface StatusInfoLegacy {
   providedIn: 'root',
 })
 export class StatusService {
-  private apiUrl = 'http://localhost:8080/api/statuses';
+  private apiUrl = 'http://localhost:8080/api/task-statuses';
   private statusesSubject = new BehaviorSubject<StatusInfo[]>([]);
   public statuses$ = this.statusesSubject.asObservable();
 
@@ -48,9 +48,12 @@ export class StatusService {
     },
     { id: 4, name: 'Done', description: 'Completed tasks', color: '#2ecc71' },
   ];
-
   constructor(private http: HttpClient) {
-    this.loadStatuses();
+    this.loadStatuses().subscribe(
+      (statuses) =>
+        console.log('Statuses loaded in constructor:', statuses.length),
+      (error) => console.error('Error loading statuses:', error)
+    );
   }
   /**
    * Load all statuses from the backend
@@ -63,13 +66,18 @@ export class StatusService {
       })
     );
   }
-
   /**
    * Get all available statuses (from cache or fallback)
    */
   getAllStatuses(): StatusInfo[] {
     const statuses = this.statusesSubject.value;
-    return statuses.length > 0 ? statuses : this.fallbackStatuses;
+    if (statuses.length > 0) {
+      return statuses;
+    } else {
+      // Set the fallback statuses in the subject if we're using them
+      this.statusesSubject.next(this.fallbackStatuses);
+      return this.fallbackStatuses;
+    }
   }
 
   /**

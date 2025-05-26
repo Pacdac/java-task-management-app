@@ -11,21 +11,24 @@
         class="search-input"
       />
     </div>
-
     <div class="filter-boxes">
       <select [(ngModel)]="filterStatus" class="filter-select">
         <option value="">All Statuses</option>
-        <option value="TODO">To Do</option>
-        <option value="IN_PROGRESS">In Progress</option>
-        <option value="DONE">Done</option>
+        <option
+          *ngFor="let status of statusService.getAllStatuses()"
+          [value]="status.id"
+        >
+          {{ status.name }}
+        </option>
       </select>
       <select [(ngModel)]="filterPriority" class="filter-select">
         <option value="">All Priorities</option>
-        <option value="1">Lowest</option>
-        <option value="2">Low</option>
-        <option value="3">Medium</option>
-        <option value="4">High</option>
-        <option value="5">Highest</option>
+        <option
+          *ngFor="let priority of priorityService.getAllPriorities()"
+          [value]="priority.id"
+        >
+          {{ priority.name }}
+        </option>
       </select>
     </div>
   </div>

@@ -33,7 +33,6 @@ export class TaskListComponent implements OnInit, OnDestroy {
   taskForEdit: Task | null = null;
   showTaskForm = false;
   formMode: 'create' | 'edit' = 'create';
-
   // For task filtering
   filterStatus: string = '';
   filterPriority: string = '';
@@ -44,9 +43,19 @@ export class TaskListComponent implements OnInit, OnDestroy {
     public statusService: StatusService,
     public priorityService: PriorityService
   ) {}
-
   ngOnInit(): void {
     this.loadTasks();
+
+    // Ensure statuses and priorities are loaded
+    this.statusService.loadStatuses().subscribe(
+      () => {},
+      (error) => console.error('Error loading statuses:', error)
+    );
+
+    this.priorityService.loadPriorities().subscribe(
+      () => {},
+      (error) => console.error('Error loading priorities:', error)
+    );
   }
 
   ngOnDestroy(): void {
@@ -139,13 +148,12 @@ export class TaskListComponent implements OnInit, OnDestroy {
         this.tasks = this.tasks.filter((task) => task.id !== id);
       });
   }
-
   get filteredTasks(): Task[] {
     return this.tasks.filter((task) => {
       // Filter by statusId
       if (
         this.filterStatus &&
-        (task.statusId || '').toString() !== this.filterStatus
+        (task.statusId || 0) !== Number(this.filterStatus)
       ) {
         return false;
       }
@@ -153,7 +161,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
       // Filter by priorityId
       if (
         this.filterPriority &&
-        (task.priorityId || '').toString() !== this.filterPriority
+        (task.priorityId || 0) !== Number(this.filterPriority)
       ) {
         return false;
       }
