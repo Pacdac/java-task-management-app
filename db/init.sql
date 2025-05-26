@@ -29,13 +29,23 @@ CREATE TABLE task_category (
     color VARCHAR(20) -- For UI representation
 );
 
+-- Create task_priority table
+CREATE TABLE task_priority (
+    priority_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL,
+    value INTEGER UNIQUE NOT NULL,
+    description TEXT,
+    color VARCHAR(20),
+    display_order INTEGER DEFAULT 0
+);
+
 -- Create tasks table
 CREATE TABLE tasks (
     task_id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     description TEXT,
     due_date DATE,
-    priority INTEGER CHECK (priority BETWEEN 1 AND 5),
+    priority_id INTEGER REFERENCES task_priority(priority_id) ON DELETE SET NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
@@ -79,6 +89,14 @@ INSERT INTO task_status (name, description, color) VALUES
     ('In Progress', 'Tasks currently being worked on', '#f39c12'),
     ('Review', 'Tasks that need review', '#9b59b6'),
     ('Done', 'Completed tasks', '#2ecc71');
+
+-- Insert default task priorities
+INSERT INTO task_priority (name, value, description, color, display_order) VALUES 
+    ('Very Low', 1, 'Lowest priority tasks', '#95a5a6', 1),
+    ('Low', 2, 'Low priority tasks', '#3498db', 2),
+    ('Medium', 3, 'Medium priority tasks', '#f39c12', 3),
+    ('High', 4, 'High priority tasks', '#e67e22', 4),
+    ('Very High', 5, 'Highest priority tasks', '#e74c3c', 5);
 
 -- Insert default task categories
 INSERT INTO task_category (name, description, color) VALUES 
