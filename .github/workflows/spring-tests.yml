@@ -20,7 +20,8 @@ jobs:
         with:
           java-version: "17"
           distribution: "temurin"
-          cache: maven      - name: Run tests
+          cache: maven
+      - name: Run tests
         working-directory: ./spring-app
         run: ./mvnw clean test
 
