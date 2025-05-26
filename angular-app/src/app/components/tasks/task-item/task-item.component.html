@@ -97,7 +97,6 @@
             <option
               *ngFor="let priority of priorityService.getAllPriorities()"
               [value]="priority.id"
-              [ngStyle]="{ 'background-color': priority.color, color: '#fff' }"
             >
               {{ priority.name }}
             </option>
