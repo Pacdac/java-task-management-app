@@ -1,0 +1,295 @@
+.container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.header h1 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.8rem;
+}
+
+/* Alert Styling */
+.alerts {
+  margin-bottom: 1.5rem;
+}
+
+.alert {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.alert-danger {
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+}
+
+.alert-info {
+  background-color: #e0f2fe;
+  border: 1px solid #bae6fd;
+  color: #0369a1;
+}
+
+/* Loading State */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.user-list {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.list-header {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.list-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #374151;
+}
+
+/* Table Styling */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table td {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Role Badges */
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.badge-admin {
+  background-color: #818cf8;
+  color: #ffffff;
+}
+
+.badge-user {
+  background-color: #6ee7b7;
+  color: #064e3b;
+}
+
+/* Form Controls */
+.form-control, .form-select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background-color: white;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #818cf8;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.btn-outline-primary {
+  border-color: #818cf8;
+  color: #818cf8;
+}
+
+.btn-outline-primary:hover {
+  background-color: #818cf8;
+  color: white;
+}
+
+.btn-outline-danger {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.btn-outline-danger:hover {
+  background-color: #ef4444;
+  color: white;
+}
+
+.btn-success {
+  background-color: #10b981;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #059669;
+}
+
+.btn-secondary {
+  background-color: #6b7280;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #4b5563;
+}
+
+/* Actions Column */
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+/* State Modifiers */
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+tr.editing {
+  background-color: #f9fafb !important;
+}
+
+/* Loading State */
+.user-list.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.btn-success {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #27ae60;
+}
+
+.btn-secondary {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #7f8c8d;
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 0.875rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.alert {
+  padding: 12px 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.alert-danger {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+.role-badge {
+  display: inline-block;
+  background-color: #4a6cf7;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.role-toggle {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  margin-left: 3px;
+  padding: 0 3px;
+}
+
+.role-toggle:hover {
+  color: #ffcccc;
+}
+
+.add-role-btn {
+  display: inline-block;
+  background-color: #ddd;
+  color: #333;
+  border: none;
+  border-radius: 20px;
+  padding: 3px 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.add-role-btn:hover {
+  background-color: #ccc;
+}

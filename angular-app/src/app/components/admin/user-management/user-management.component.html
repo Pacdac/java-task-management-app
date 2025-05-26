@@ -1,0 +1,139 @@
+<div class="container">
+  <div class="header">
+    <h1>User Management</h1>
+    <div class="actions">
+      <button class="btn btn-primary" routerLink="/admin">
+        Back to Dashboard
+      </button>
+    </div>
+  </div>
+
+  <!-- Error Messages -->
+  <div class="alerts">
+    <div
+      *ngIf="error"
+      class="alert alert-danger alert-dismissible fade show"
+      role="alert"
+    >
+      {{ error }}
+      <button type="button" class="btn-close" (click)="error = null"></button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- User List -->
+  <div class="user-list" [class.loading]="isLoading">
+    <div class="list-header">
+      <h2>Users ({{ users.length }})</h2>
+    </div>
+
+    <!-- No Users Message -->
+    <div *ngIf="users.length === 0 && !isLoading" class="alert alert-info">
+      No users found in the system.
+    </div>
+
+    <!-- Users Table -->
+    <div class="table-responsive" *ngIf="users.length > 0">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let user of users"
+            [class.editing]="editingUser?.id === user.id"
+          >
+            <!-- Display Mode -->
+            <ng-container *ngIf="editingUser?.id !== user.id">
+              <td>{{ user.id }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <span
+                  class="badge"
+                  [class.badge-admin]="user.role === 'ROLE_ADMIN'"
+                  [class.badge-user]="user.role === 'ROLE_USER'"
+                >
+                  {{ getRoleDisplayName(user.role) }}
+                </span>
+              </td>
+              <td>{{ user.createdAt | date : "medium" }}</td>
+              <td class="actions">
+                <button
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="startEdit(user)"
+                  title="Edit user"
+                >
+                  <i class="bi bi-pencil"></i> Edit
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-danger ms-2"
+                  (click)="deleteUser(user.id)"
+                  title="Delete user"
+                >
+                  <i class="bi bi-trash"></i> Delete
+                </button>
+              </td>
+            </ng-container>
+
+            <!-- Edit Mode -->
+            <ng-container *ngIf="editingUser?.id === user.id">
+              <td>{{ user.id }}</td>
+              <td>{{ user.username }}</td>
+              <td>
+                <input
+                  type="email"
+                  class="form-control form-control-sm"
+                  [(ngModel)]="editingUser!.email"
+                  placeholder="Enter email"
+                  [disabled]="isLoading"
+                />
+              </td>
+              <td>
+                <select
+                  class="form-select form-select-sm"
+                  [(ngModel)]="editingUser!.role"
+                  [disabled]="isLoading"
+                >
+                  <option *ngFor="let role of availableRoles" [value]="role">
+                    {{ role }}
+                  </option>
+                </select>
+              </td>
+              <td>{{ user.createdAt | date : "medium" }}</td>
+              <td class="actions">
+                <button
+                  class="btn btn-sm btn-success"
+                  (click)="saveUser()"
+                  [disabled]="isLoading"
+                >
+                  <i class="bi bi-check-lg"></i> Save
+                </button>
+                <button
+                  class="btn btn-sm btn-secondary ms-2"
+                  (click)="cancelEdit()"
+                  [disabled]="isLoading"
+                >
+                  <i class="bi bi-x-lg"></i> Cancel
+                </button>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

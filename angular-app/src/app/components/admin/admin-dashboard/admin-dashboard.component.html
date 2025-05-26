@@ -6,7 +6,6 @@
       {{ (authService.currentUser$ | async)?.username || "Admin" }}!
     </p>
   </div>
-
   <div class="admin-cards">
     <div class="admin-card" routerLink="/admin/priorities">
       <div class="card-icon">🏷️</div>
@@ -18,6 +17,12 @@
       <div class="card-icon">📊</div>
       <h3>Statuses Management</h3>
       <p>Create, edit, or delete task statuses</p>
+    </div>
+
+    <div class="admin-card" routerLink="/admin/users">
+      <div class="card-icon">👥</div>
+      <h3>User Management</h3>
+      <p>Manage user accounts, roles, and permissions</p>
     </div>
   </div>
 </div>
