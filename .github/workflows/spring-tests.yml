@@ -20,14 +20,12 @@ jobs:
         with:
           java-version: "17"
           distribution: "temurin"
-          cache: maven
-
-      - name: Run tests
+          cache: maven      - name: Run tests
         working-directory: ./spring-app
         run: ./mvnw clean test
 
       - name: Upload test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-results
