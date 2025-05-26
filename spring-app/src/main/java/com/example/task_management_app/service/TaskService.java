@@ -4,9 +4,11 @@ import com.example.task_management_app.dto.TaskDTO;
 import com.example.task_management_app.exception.ResourceNotFoundException;
 import com.example.task_management_app.model.Task;
 import com.example.task_management_app.model.TaskCategory;
+import com.example.task_management_app.model.TaskPriority;
 import com.example.task_management_app.model.TaskStatus;
 import com.example.task_management_app.model.User;
 import com.example.task_management_app.repository.TaskCategoryRepository;
+import com.example.task_management_app.repository.TaskPriorityRepository;
 import com.example.task_management_app.repository.TaskRepository;
 import com.example.task_management_app.repository.TaskStatusRepository;
 import com.example.task_management_app.repository.UserRepository;
@@ -19,21 +21,23 @@ import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
-
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final TaskStatusRepository taskStatusRepository;
     private final TaskCategoryRepository taskCategoryRepository;
+    private final TaskPriorityRepository taskPriorityRepository;
 
     @Autowired
     public TaskService(TaskRepository taskRepository,
             UserRepository userRepository,
             TaskStatusRepository taskStatusRepository,
-            TaskCategoryRepository taskCategoryRepository) {
+            TaskCategoryRepository taskCategoryRepository,
+            TaskPriorityRepository taskPriorityRepository) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
         this.taskStatusRepository = taskStatusRepository;
         this.taskCategoryRepository = taskCategoryRepository;
+        this.taskPriorityRepository = taskPriorityRepository;
     }
 
     /**
@@ -103,7 +107,14 @@ public class TaskService {
         existingTask.setTitle(taskDTO.getTitle());
         existingTask.setDescription(taskDTO.getDescription());
         existingTask.setDueDate(taskDTO.getDueDate());
-        existingTask.setPriority(taskDTO.getPriority());
+
+        // Update priority if present
+        if (taskDTO.getPriorityId() != null) {
+            TaskPriority priority = taskPriorityRepository.findById(taskDTO.getPriorityId())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Priority not found with id: " + taskDTO.getPriorityId()));
+            existingTask.setPriority(priority);
+        }
 
         // Update user if present
         if (taskDTO.getUserId() != null) {
@@ -184,13 +195,18 @@ public class TaskService {
         dto.setTitle(task.getTitle());
         dto.setDescription(task.getDescription());
         dto.setDueDate(task.getDueDate());
-        dto.setPriority(task.getPriority());
         dto.setCreatedAt(task.getCreatedAt());
         dto.setUpdatedAt(task.getUpdatedAt());
 
         if (task.getUser() != null) {
             dto.setUserId(task.getUser().getId());
             dto.setUsername(task.getUser().getUsername());
+        }
+
+        if (task.getPriority() != null) {
+            dto.setPriorityId(task.getPriority().getId());
+            dto.setPriorityName(task.getPriority().getName());
+            dto.setPriorityValue(task.getPriority().getValue());
         }
 
         if (task.getStatus() != null) {
@@ -219,17 +235,29 @@ public class TaskService {
         if (taskDTO.getId() != null) {
             task.setId(taskDTO.getId());
         }
-
         task.setTitle(taskDTO.getTitle());
         task.setDescription(taskDTO.getDescription());
         task.setDueDate(taskDTO.getDueDate());
-        task.setPriority(taskDTO.getPriority());
 
         // Set user if userId is present
         if (taskDTO.getUserId() != null) {
             User user = userRepository.findById(taskDTO.getUserId())
                     .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + taskDTO.getUserId()));
             task.setUser(user);
+        }
+
+        // Set priority - try by priorityId first, then fall back to priorityValue for
+        // compatibility
+        if (taskDTO.getPriorityId() != null) {
+            TaskPriority priority = taskPriorityRepository.findById(taskDTO.getPriorityId())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Priority not found with id: " + taskDTO.getPriorityId()));
+            task.setPriority(priority);
+        } else if (taskDTO.getPriorityValue() != null) {
+            TaskPriority priority = taskPriorityRepository.findByValue(taskDTO.getPriorityValue())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Priority not found with value: " + taskDTO.getPriorityValue()));
+            task.setPriority(priority);
         }
 
         // Set status if statusId is present

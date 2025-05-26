@@ -1,8 +1,6 @@
 package com.example.task_management_app.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -13,9 +11,9 @@ import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "tasks")
-@Data // Generates getters, setters, toString, equals, and hashCode
-@NoArgsConstructor // Generates a no-args constructor
-@AllArgsConstructor // Generates a constructor with all fields
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Task {
 
     @Id
@@ -30,13 +28,12 @@ public class Task {
 
     @Column(columnDefinition = "TEXT")
     private String description;
-
     @Column(name = "due_date")
     private LocalDate dueDate;
 
-    @Min(1)
-    @Max(5)
-    private Integer priority;
+    @ManyToOne
+    @JoinColumn(name = "priority_id")
+    private TaskPriority priority;
 
     @Column(name = "created_at")
     private OffsetDateTime createdAt;

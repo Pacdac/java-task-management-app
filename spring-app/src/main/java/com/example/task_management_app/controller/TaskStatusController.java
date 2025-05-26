@@ -6,13 +6,13 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/task-statuses")
-@CrossOrigin(origins = "*") // For development - restrict this in production
 public class TaskStatusController {
 
     private final TaskStatusService taskStatusService;
@@ -58,25 +58,27 @@ public class TaskStatusController {
     }
 
     /**
-     * Create a new task status
+     * Create a new task status (Admin only)
      * 
      * @param taskStatusDTO Task status data
      * @return Created task status
      */
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TaskStatusDTO> createTaskStatus(@Valid @RequestBody TaskStatusDTO taskStatusDTO) {
         TaskStatusDTO createdStatus = taskStatusService.createTaskStatus(taskStatusDTO);
         return new ResponseEntity<>(createdStatus, HttpStatus.CREATED);
     }
 
     /**
-     * Update an existing task status
+     * Update an existing task status (Admin only)
      * 
      * @param id            Status ID
      * @param taskStatusDTO Updated task status data
      * @return Updated task status
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TaskStatusDTO> updateTaskStatus(@PathVariable Integer id,
             @Valid @RequestBody TaskStatusDTO taskStatusDTO) {
         TaskStatusDTO updatedStatus = taskStatusService.updateTaskStatus(id, taskStatusDTO);
@@ -84,12 +86,13 @@ public class TaskStatusController {
     }
 
     /**
-     * Delete a task status
+     * Delete a task status (Admin only)
      * 
      * @param id Status ID
      * @return Empty response with 204 status
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteTaskStatus(@PathVariable Integer id) {
         taskStatusService.deleteTaskStatus(id);
         return ResponseEntity.noContent().build();

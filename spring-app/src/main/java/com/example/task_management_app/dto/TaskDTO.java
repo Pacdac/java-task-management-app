@@ -1,7 +1,5 @@
 package com.example.task_management_app.dto;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -22,12 +20,13 @@ public class TaskDTO {
     private String title;
 
     private String description;
-
     private LocalDate dueDate;
 
-    @Min(value = 1, message = "Priority must be between 1 and 5")
-    @Max(value = 5, message = "Priority must be between 1 and 5")
-    private Integer priority;
+    private Integer priorityId;
+
+    private String priorityName;
+
+    private Integer priorityValue; // The numeric value for compatibility
 
     private OffsetDateTime createdAt;
 

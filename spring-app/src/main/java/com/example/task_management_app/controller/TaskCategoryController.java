@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/task-categories")
-@CrossOrigin(origins = "*") // For development - restrict this in production
 public class TaskCategoryController {
 
     private final TaskCategoryService taskCategoryService;
