@@ -1,7 +1,9 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Task } from '../../../services/task.service';
+import { StatusService } from '../../../services/status.service';
+import { PriorityService } from '../../../services/priority.service';
 
 @Component({
   selector: 'app-task-form',
@@ -10,13 +12,13 @@ import { Task } from '../../../services/task.service';
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.css',
 })
-export class TaskFormComponent {
+export class TaskFormComponent implements OnInit {
   @Input() mode: 'create' | 'edit' = 'create';
   @Input() task: Task | Partial<Task> = {
     title: '',
     description: '',
-    status: 'TODO',
-    priority: 3,
+    statusId: 1, // Default to "To Do"
+    priorityId: 3, // Default to medium priority
   };
 
   @Output() save = new EventEmitter<Task>();
@@ -24,6 +26,17 @@ export class TaskFormComponent {
 
   @Input() error = '';
   @Input() loading = false;
+
+  constructor(
+    public statusService: StatusService,
+    public priorityService: PriorityService
+  ) {}
+
+  ngOnInit() {
+    // Ensure we have the latest data from the backend
+    this.statusService.loadStatuses().subscribe();
+    this.priorityService.loadPriorities().subscribe();
+  }
   saveTask(): void {
     if (!this.task.title || !this.task.description) {
       return; // Let parent component handle validation
@@ -37,7 +50,14 @@ export class TaskFormComponent {
       }
     }
 
-    this.save.emit(this.task as Task);
+    // Ensure statusId and priorityId are numbers
+    const taskToSave: Task = {
+      ...this.task,
+      statusId: Number(this.task.statusId) || 1, // Default to first status
+      priorityId: Number(this.task.priorityId) || 3, // Default to medium priority
+    } as Task;
+
+    this.save.emit(taskToSave);
   }
   onCancel(): void {
     this.close.emit();

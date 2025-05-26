@@ -2,6 +2,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Task } from '../../../services/task.service';
+import { StatusService } from '../../../services/status.service';
+import { PriorityService } from '../../../services/priority.service';
 
 @Component({
   selector: 'app-task-item',
@@ -14,7 +16,7 @@ export class TaskItemComponent {
   @Input() task!: Task;
   @Output() statusChange = new EventEmitter<{
     task: Task;
-    status: 'TODO' | 'IN_PROGRESS' | 'DONE';
+    statusId: number;
   }>();
   @Output() editTask = new EventEmitter<Task>();
   @Output() deleteTask = new EventEmitter<number | undefined>();
@@ -23,43 +25,29 @@ export class TaskItemComponent {
   isEditing = false;
   editForm: Task = {} as Task;
 
+  constructor(
+    public statusService: StatusService,
+    public priorityService: PriorityService
+  ) {}
   // Helper methods for template
-  getPriorityString(priority: number): string {
-    switch (priority) {
-      case 1:
-        return 'lowest';
-      case 2:
-        return 'low';
-      case 3:
-        return 'medium';
-      case 4:
-        return 'high';
-      case 5:
-        return 'highest';
-      default:
-        return 'unknown';
-    }
+  getPriorityString(priorityId: number): string {
+    const priority = this.priorityService.getPriorityById(priorityId);
+    return priority ? priority.name.toLowerCase() : 'unknown';
   }
 
-  getSafeStatusClass(status: string): string {
-    if (!status) return 'todo';
-    return (status + '').toLowerCase();
+  getStatusClass(statusId: number): string {
+    const status = this.statusService.getStatusById(statusId);
+    return status ? this.statusService.getStatusCssClass(status.name) : '';
   }
 
-  formatStatus(status: any): string {
-    if (!status) return '';
-    const statusStr = status + '';
-    return statusStr.replace ? statusStr.replace('_', ' ') : statusStr;
+  formatStatus(statusId: number): string {
+    return this.statusService.getStatusName(statusId);
   }
 
-  formatPriority(priority: any): string {
-    if (!priority) return '';
-    const priorityStr = priority + '';
-    return (
-      priorityStr.charAt(0).toUpperCase() + priorityStr.slice(1).toLowerCase()
-    );
+  formatPriority(priorityId: number): string {
+    const priority = this.priorityService.getPriorityById(priorityId);
+    return priority ? priority.name : '';
   }
-
   onEdit(): void {
     this.isEditing = true;
     // Create a copy of the task for editing
@@ -68,6 +56,10 @@ export class TaskItemComponent {
       dueDate: this.task.dueDate
         ? new Date(this.task.dueDate).toISOString().split('T')[0]
         : '',
+      // Ensure statusId is properly set
+      statusId: this.task.statusId || 1,
+      // Ensure priorityId is properly set as number
+      priorityId: Number(this.task.priorityId) || 3,
     };
   }
 
@@ -79,9 +71,12 @@ export class TaskItemComponent {
   onSaveEdit(): void {
     if (this.editForm.title.trim() && this.editForm.description.trim()) {
       // Convert date back to proper format if needed
-      const updatedTask = {
+      const updatedTask: Task = {
         ...this.editForm,
         dueDate: this.editForm.dueDate || undefined,
+        // Ensure statusId and priorityId are properly set as numbers
+        statusId: Number(this.editForm.statusId) || 1,
+        priorityId: Number(this.editForm.priorityId) || 3,
       };
       this.editTask.emit(updatedTask);
       this.isEditing = false;

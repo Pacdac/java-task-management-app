@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TaskService, Task } from '../../../services/task.service';
+import { StatusService } from '../../../services/status.service';
+import { PriorityService } from '../../../services/priority.service';
 import { Subscription } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { TaskItemComponent } from '../task-item/task-item.component';
@@ -24,8 +26,8 @@ export class TaskListComponent implements OnInit, OnDestroy {
   newTask: Partial<Task> = {
     title: '',
     description: '',
-    status: 'TODO',
-    priority: 3,
+    statusId: 1, // Default to "To Do"
+    priorityId: 3, // Default to medium priority
   };
   // For task editing and creation
   taskForEdit: Task | null = null;
@@ -37,7 +39,11 @@ export class TaskListComponent implements OnInit, OnDestroy {
   filterPriority: string = '';
   searchTerm: string = '';
 
-  constructor(private taskService: TaskService) {}
+  constructor(
+    private taskService: TaskService,
+    public statusService: StatusService,
+    public priorityService: PriorityService
+  ) {}
 
   ngOnInit(): void {
     this.loadTasks();
@@ -77,19 +83,14 @@ export class TaskListComponent implements OnInit, OnDestroy {
         },
       });
   }
+  onTaskStatusChange(event: { task: Task; statusId: number }): void {
+    const { task, statusId } = event;
 
-  onTaskStatusChange(event: {
-    task: Task;
-    status: 'TODO' | 'IN_PROGRESS' | 'DONE';
-  }): void {
-    const { task, status } = event;
-    // Store original status in case of error
-    const originalStatus = task.status;
+    const originalStatusId = task.statusId;
 
-    // Update UI immediately for responsive feel
-    task.status = status;
+    task.statusId = statusId;
 
-    const updatedTask: Task = { ...task, status };
+    const updatedTask: Task = { ...task, statusId };
 
     this.taskService
       .updateTask(updatedTask)
@@ -100,7 +101,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
             'Failed to update task. Please try again later.';
           console.error('Error updating task:', err);
           // Revert the status change in the UI
-          task.status = originalStatus;
+          task.statusId = originalStatusId;
           throw err;
         })
       )
@@ -141,18 +142,18 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
   get filteredTasks(): Task[] {
     return this.tasks.filter((task) => {
-      // Filter by status
+      // Filter by statusId
       if (
         this.filterStatus &&
-        (task.status || '').toString() !== this.filterStatus
+        (task.statusId || '').toString() !== this.filterStatus
       ) {
         return false;
       }
 
-      // Filter by priority
+      // Filter by priorityId
       if (
         this.filterPriority &&
-        (task.priority || '').toString() !== this.filterPriority
+        (task.priorityId || '').toString() !== this.filterPriority
       ) {
         return false;
       }
@@ -176,17 +177,13 @@ export class TaskListComponent implements OnInit, OnDestroy {
     this.taskForEdit = {
       title: '',
       description: '',
-      status: 'TODO',
-      priority: 3,
+      statusId: 1,
+      priorityId: 3,
     };
     this.formMode = 'create';
     this.showTaskForm = true;
   }
-
   openEditTaskForm(task: Task): void {
-    // Now that we have inline editing, we can handle the edit directly
-    // or optionally still use the modal form - for now let's handle it inline
-    // So this method will be used to save the edited task
     this.updateExistingTask(task);
   }
 
@@ -232,10 +229,16 @@ export class TaskListComponent implements OnInit, OnDestroy {
         this.closeTaskForm();
       });
   }
-
   private updateExistingTask(task: Task): void {
+    // Ensure statusId and priorityId are properly set
+    const taskToUpdate = {
+      ...task,
+      statusId: task.statusId || 1,
+      priorityId: Number(task.priorityId) || 3,
+    };
+
     this.taskService
-      .updateTask(task)
+      .updateTask(taskToUpdate)
       .pipe(
         catchError((err) => {
           this.error =
