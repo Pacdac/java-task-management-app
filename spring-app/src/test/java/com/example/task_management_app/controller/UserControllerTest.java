@@ -33,7 +33,7 @@ public class UserControllerTest {
     private UserRepository repository;
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     public void getAllUsers_WhenUsersExist_ReturnsUsersList() throws Exception {
 
         User testUser = new User();
@@ -59,7 +59,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     public void getAllUsers_WhenNoUsersExist_ReturnsEmptyList() throws Exception {
 
         mvc.perform(get("/api/users")
