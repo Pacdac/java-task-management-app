@@ -91,7 +91,7 @@ INSERT INTO task_status (name, description, color) VALUES
     ('Done', 'Completed tasks', '#2ecc71');
 
 -- Insert default task priorities
-INSERT INTO task_priority (name, value, description, color, display_order) VALUES 
+INSERT INTO task_priority (name, priority_value, description, color, display_order) VALUES 
     ('Very Low', 1, 'Lowest priority tasks', '#95a5a6', 1),
     ('Low', 2, 'Low priority tasks', '#3498db', 2),
     ('Medium', 3, 'Medium priority tasks', '#f39c12', 3),

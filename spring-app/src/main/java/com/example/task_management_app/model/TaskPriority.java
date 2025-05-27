@@ -24,10 +24,9 @@ public class TaskPriority {
     @Size(max = 50)
     @Column(nullable = false, unique = true)
     private String name;
-
     @NotNull
-    @Column(nullable = false, unique = true)
-    private Integer priority_value;
+    @Column(name = "priority_value", nullable = false, unique = true)
+    private Integer value; // The numeric value (1-5)
     @Column(columnDefinition = "TEXT")
     private String description;
 
