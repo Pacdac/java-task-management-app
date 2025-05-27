@@ -50,6 +50,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/status").permitAll() // Allow access to root endpoint
                         .requestMatchers("/api/auth/**").permitAll() // Allow access to auth endpoints
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/users/me/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")
                         .requestMatchers("/api/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
