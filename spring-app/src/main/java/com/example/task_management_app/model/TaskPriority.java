@@ -27,8 +27,7 @@ public class TaskPriority {
 
     @NotNull
     @Column(nullable = false, unique = true)
-    private Integer value; // The numeric value (1-5)
-
+    private Integer priority_value;
     @Column(columnDefinition = "TEXT")
     private String description;
 

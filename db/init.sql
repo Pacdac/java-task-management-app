@@ -33,7 +33,7 @@ CREATE TABLE task_category (
 CREATE TABLE task_priority (
     priority_id SERIAL PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL,
-    value INTEGER UNIQUE NOT NULL,
+    priority_value INTEGER UNIQUE NOT NULL,
     description TEXT,
     color VARCHAR(20),
     display_order INTEGER DEFAULT 0
