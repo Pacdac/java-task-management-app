@@ -2,6 +2,7 @@ package com.example.task_management_app.service;
 
 import com.example.task_management_app.dto.UserDTO;
 import com.example.task_management_app.exception.ResourceNotFoundException;
+import com.example.task_management_app.exception.UserAlreadyExistsException;
 import com.example.task_management_app.model.User;
 import com.example.task_management_app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,11 +70,11 @@ public class UserService {
     public UserDTO createUser(UserDTO userDTO) {
         // Check if username or email already exists
         if (userRepository.existsByUsername(userDTO.getUsername())) {
-            throw new IllegalArgumentException("Username already exists");
+            throw new UserAlreadyExistsException("Username already exists: " + userDTO.getUsername());
         }
 
         if (userRepository.existsByEmail(userDTO.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
+            throw new UserAlreadyExistsException("Email already exists: " + userDTO.getEmail());
         }
 
         User user = convertToEntity(userDTO);
