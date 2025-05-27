@@ -35,6 +35,9 @@
 
       <ng-container *ngIf="isAuthenticated">
         <!-- Show these links only when user is logged in -->
+        <li class="nav-item auth-link">
+          <a routerLink="/profile" routerLinkActive="active">Profile</a>
+        </li>
         <li class="nav-item auth-link user-greeting">
           <span>Welcome, {{ username }}</span>
         </li>

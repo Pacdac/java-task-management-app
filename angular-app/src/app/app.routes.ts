@@ -7,6 +7,7 @@ import { AdminDashboardComponent } from './components/admin/admin-dashboard/admi
 import { PriorityManagementComponent } from './components/admin/priority-management/priority-management.component';
 import { StatusManagementComponent } from './components/admin/status-management/status-management.component';
 import { UserManagementComponent } from './components/admin/user-management/user-management.component';
+import { ProfilePageComponent } from './components/profile/profile-page/profile-page.component';
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 
@@ -22,6 +23,11 @@ export const routes: Routes = [
   {
     path: 'tasks',
     component: TaskListComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'profile',
+    component: ProfilePageComponent,
     canActivate: [authGuard],
   },
   {

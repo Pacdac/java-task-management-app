@@ -7,6 +7,9 @@ export interface User {
   id: number;
   username: string;
   email: string;
+  firstName?: string;
+  lastName?: string;
+  password?: string; // Add optional password field for profile updates
   role: string; // e.g., 'USER', 'ADMIN'
   createdAt: string;
   lastLogin?: string;
@@ -76,5 +79,19 @@ export class UserService {
    */
   deleteUser(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  /**
+   * Get current user's profile
+   */
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/me`);
+  }
+
+  /**
+   * Update current user's profile
+   */
+  updateCurrentUser(user: Partial<User>): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/me`, user);
   }
 }

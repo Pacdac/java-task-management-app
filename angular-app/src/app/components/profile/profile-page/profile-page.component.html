@@ -1,1 +1,156 @@
-<p>profile-page works!</p>
+<div class="profile-container">
+  <h1>User Profile</h1>
+
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Loading profile...</p>
+  </div>
+
+  <div *ngIf="!loading && errorMessage && !user" class="error-container">
+    <p class="error-message">{{ errorMessage }}</p>
+    <button (click)="loadUserProfile()" class="btn btn-primary">
+      Try Again
+    </button>
+  </div>
+
+  <div *ngIf="!loading && user" class="profile-content">
+    <!-- Success message -->
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+
+    <!-- Error message -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <!-- View Mode -->
+    <div *ngIf="!editMode" class="profile-view">
+      <div class="profile-info">
+        <div class="profile-field">
+          <span class="field-label">Username:</span>
+          <span class="field-value">{{ user.username }}</span>
+        </div>
+        <div class="profile-field" *ngIf="user.firstName">
+          <span class="field-label">First Name:</span>
+          <span class="field-value">{{ user.firstName }}</span>
+        </div>
+        <div class="profile-field" *ngIf="user.lastName">
+          <span class="field-label">Last Name:</span>
+          <span class="field-value">{{ user.lastName }}</span>
+        </div>
+        <div class="profile-field">
+          <span class="field-label">Email:</span>
+          <span class="field-value">{{ user.email }}</span>
+        </div>
+        <div class="profile-field">
+          <span class="field-label">Role:</span>
+          <span class="field-value">{{ user.role }}</span>
+        </div>
+        <div class="profile-field">
+          <span class="field-label">Member Since:</span>
+          <span class="field-value">{{
+            user.createdAt | date : "medium"
+          }}</span>
+        </div>
+        <div *ngIf="user.lastLogin" class="profile-field">
+          <span class="field-label">Last Login:</span>
+          <span class="field-value">{{
+            user.lastLogin | date : "medium"
+          }}</span>
+        </div>
+      </div>
+      <div class="actions">
+        <button (click)="toggleEditMode()" class="btn btn-primary">
+          Edit Profile
+        </button>
+      </div>
+    </div>
+    <!-- Edit Mode -->
+    <div *ngIf="editMode" class="profile-edit">
+      <form (ngSubmit)="updateProfile()">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            [value]="user.username"
+            disabled
+            class="form-control form-control-disabled"
+          />
+          <small class="form-text text-muted">Username cannot be changed</small>
+        </div>
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            [(ngModel)]="formData.firstName"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            [(ngModel)]="formData.lastName"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            [(ngModel)]="formData.email"
+            required
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">New Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            [(ngModel)]="formData.password"
+            class="form-control"
+          />
+          <small class="form-text text-muted"
+            >Leave blank to keep current password</small
+          >
+        </div>
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select
+            id="role"
+            name="role"
+            [(ngModel)]="formData.role"
+            class="form-control"
+          >
+            <option value="USER">User</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+          <small class="form-text text-muted">
+            Everyone can change role for dev purposes
+          </small>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn btn-success">Save Changes</button>
+          <button
+            type="button"
+            (click)="toggleEditMode()"
+            class="btn btn-secondary"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
