@@ -453,6 +453,50 @@ Deletes a user.
 - **Example**: `/users/1`
 - **Response**: HTTP 204 (No Content)
 
+### Get Current User
+
+Retrieves the profile of the currently authenticated user.
+
+- **URL**: `/users/me`
+- **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
+- **Response**: User object
+- **Example Response**:
+
+```json
+{
+  "id": 1,
+  "username": "johndoe",
+  "email": "john@example.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "createdAt": "2025-05-01T09:00:00Z",
+  "updatedAt": "2025-05-01T09:00:00Z"
+}
+```
+
+### Update Current User
+
+Updates the profile of the currently authenticated user.
+
+- **URL**: `/users/me`
+- **Method**: `PUT`
+- **Authorization**: Requires `USER` or `ADMIN` role
+- **Request Body**: Updated user data
+- **Example Request**:
+
+```json
+{
+  "username": "johndoe",
+  "email": "john.updated@example.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "password": "newpassword123" // Optional - only include to change password
+}
+```
+
+- **Response**: Updated user object (without password)
+
 ## Task Status Endpoints
 
 ### Get All Task Statuses
@@ -1216,6 +1260,48 @@ You can import the following Postman collection to test the API endpoints:
               "path": ["users", "1"]
             }
           }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me"]
+            }
+          }
+        },
+        {
+          "name": "Update Current User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"johndoe\",\n  \"email\": \"john.updated@example.com\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"password\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me"]
+            }
+          }
         }
       ]
     },
@@ -1801,6 +1887,30 @@ curl -X PUT "http://localhost:8080/api/users/1" \
 # Using saved token (requires ADMIN role)
 curl -X DELETE "http://localhost:8080/api/users/1" \
   -H "Authorization: Bearer $TOKEN"
+```
+
+**Get Current User**
+
+```bash
+# Using saved token
+curl -X GET "http://localhost:8080/api/users/me" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Update Current User**
+
+```bash
+# Using saved token
+curl -X PUT "http://localhost:8080/api/users/me" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{
+    "username": "johndoe",
+    "email": "john.updated@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "password": "newpassword123"
+  }'
 ```
 
 ### Task Statuses
