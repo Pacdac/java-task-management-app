@@ -43,7 +43,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> register(@Valid @RequestBody RegistrationDTO registrationDTO) {
+    public ResponseEntity<AuthResponseDTO> register(@Valid @RequestBody RegistrationDTO registrationDTO) {
 
         try {
             // Additional validation
@@ -61,7 +61,13 @@ public class AuthController {
             // Create user using the existing service
             UserDTO createdUser = userService.createUser(userDTO);
 
-            return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+            // Get a JWT token for the newly created user
+            UserDetails userDetails = userDetailsService.loadUserByUsername(createdUser.getUsername());
+            String token = jwtUtil.generateToken(userDetails);
+
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(new AuthResponseDTO(token, registrationDTO.getUsername(), userDetails.getAuthorities()));
 
         } catch (Exception e) {
             throw e;
