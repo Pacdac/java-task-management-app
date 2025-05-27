@@ -1,4 +1,4 @@
-## Task Management API Documentation
+# Task Management API Documentation
 
 This document provides details about the REST API endpoints available in the Task Management application.
 
@@ -11,14 +11,15 @@ This document provides details about the REST API endpoints available in the Tas
 5. [User Endpoints](#user-endpoints)
 6. [Task Status Endpoints](#task-status-endpoints)
 7. [Task Category Endpoints](#task-category-endpoints)
-8. [API Status](#api-status)
-9. [Error Handling](#error-handling)
-10. [Postman Collection](#postman-collection)
-11. [cURL Examples](#curl-examples)
+8. [Task Priority Endpoints](#task-priority-endpoints)
+9. [API Status](#api-status)
+10. [Error Handling](#error-handling)
+11. [Postman Collection](#postman-collection)
+12. [cURL Examples](#curl-examples)
 
 ## Overview
 
-The Task Management API provides a RESTful interface for managing tasks, users, task statuses, and task categories. It follows standard HTTP methods and uses JSON for data exchange.
+The Task Management API provides a RESTful interface for managing tasks, users, task statuses, task categories, and task priorities. It follows standard HTTP methods and uses JSON for data exchange.
 
 ## Base URL
 
@@ -42,7 +43,7 @@ The API uses JWT (JSON Web Token) based authentication. To access protected endp
 
 To use the API, first register a user account.
 
-- **URL**: `/api/auth/register`
+- **URL**: `/auth/register`
 - **Method**: `POST`
 - **Request Body**: Registration data including credentials
 - **Example Request**:
@@ -66,7 +67,7 @@ To use the API, first register a user account.
 
 Authenticates a user and returns a JWT token.
 
-- **URL**: `/api/auth/login`
+- **URL**: `/auth/login`
 - **Method**: `POST`
 - **Request Body**: Authentication credentials
 - **Example Request**:
@@ -106,8 +107,8 @@ Authorization: Bearer <your_jwt_token>
 
 All API endpoints except for the following require a valid JWT token:
 
-- `/` (root endpoint)
-- `/api/auth/**` (authentication endpoints)
+- `/status` (API status endpoint)
+- `/auth/**` (authentication endpoints)
 
 #### Error Responses
 
@@ -177,6 +178,7 @@ Retrieves a list of all tasks.
 
 - **URL**: `/tasks`
 - **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **Response**: Array of task objects
 - **Example Response**:
 
@@ -221,6 +223,7 @@ Retrieves a specific task by its ID.
 
 - **URL**: `/tasks/{id}`
 - **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **URL Parameters**: `id=[integer]` - Task ID
 - **Example**: `/tasks/1`
 - **Response**: Task object
@@ -250,6 +253,7 @@ Retrieves all tasks assigned to a specific user.
 
 - **URL**: `/tasks/user/{userId}`
 - **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **URL Parameters**: `userId=[integer]` - User ID
 - **Example**: `/tasks/user/1`
 - **Response**: Array of task objects
@@ -260,6 +264,7 @@ Creates a new task.
 
 - **URL**: `/tasks`
 - **Method**: `POST`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **Request Body**: Task data
 - **Example Request**:
 
@@ -283,6 +288,7 @@ Updates an existing task.
 
 - **URL**: `/tasks/{id}`
 - **Method**: `PUT`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **URL Parameters**: `id=[integer]` - Task ID
 - **Request Body**: Updated task data
 - **Example**: `/tasks/1`
@@ -308,6 +314,7 @@ Deletes a task.
 
 - **URL**: `/tasks/{id}`
 - **Method**: `DELETE`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **URL Parameters**: `id=[integer]` - Task ID
 - **Example**: `/tasks/1`
 - **Response**: HTTP 204 (No Content)
@@ -318,6 +325,7 @@ Searches tasks by title (case-insensitive).
 
 - **URL**: `/tasks/search`
 - **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **Query Parameters**: `keyword=[string]` - Search term
 - **Example**: `/tasks/search?keyword=implement`
 - **Response**: Array of matching task objects
@@ -328,6 +336,7 @@ Retrieves all overdue tasks for a specific user.
 
 - **URL**: `/tasks/overdue/{userId}`
 - **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **URL Parameters**: `userId=[integer]` - User ID
 - **Example**: `/tasks/overdue/1`
 - **Response**: Array of overdue task objects
@@ -340,6 +349,7 @@ Retrieves a list of all users.
 
 - **URL**: `/users`
 - **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **Response**: Array of user objects
 - **Example Response**:
 
@@ -372,6 +382,7 @@ Retrieves a specific user by their ID.
 
 - **URL**: `/users/{id}`
 - **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **URL Parameters**: `id=[integer]` - User ID
 - **Example**: `/users/1`
 - **Response**: User object
@@ -382,6 +393,7 @@ Retrieves a specific user by their username.
 
 - **URL**: `/users/username/{username}`
 - **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **URL Parameters**: `username=[string]` - Username
 - **Example**: `/users/username/johndoe`
 - **Response**: User object
@@ -392,6 +404,7 @@ Creates a new user.
 
 - **URL**: `/users`
 - **Method**: `POST`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **Request Body**: User data
 - **Example Request**:
 
@@ -448,6 +461,7 @@ Retrieves a list of all task statuses.
 
 - **URL**: `/task-statuses`
 - **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **Response**: Array of task status objects
 - **Example Response**:
 
@@ -486,6 +500,7 @@ Retrieves a specific task status by its ID.
 
 - **URL**: `/task-statuses/{id}`
 - **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **URL Parameters**: `id=[integer]` - Status ID
 - **Example**: `/task-statuses/1`
 - **Response**: Task status object
@@ -496,6 +511,7 @@ Retrieves a specific task status by its name.
 
 - **URL**: `/task-statuses/name/{name}`
 - **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **URL Parameters**: `name=[string]` - Status name
 - **Example**: `/task-statuses/name/To%20Do`
 - **Response**: Task status object
@@ -506,6 +522,7 @@ Creates a new task status.
 
 - **URL**: `/task-statuses`
 - **Method**: `POST`
+- **Authorization**: Requires `ADMIN` role
 - **Request Body**: Task status data
 - **Example Request**:
 
@@ -525,6 +542,7 @@ Updates an existing task status.
 
 - **URL**: `/task-statuses/{id}`
 - **Method**: `PUT`
+- **Authorization**: Requires `ADMIN` role
 - **URL Parameters**: `id=[integer]` - Status ID
 - **Request Body**: Updated task status data
 - **Example**: `/task-statuses/5`
@@ -546,6 +564,7 @@ Deletes a task status.
 
 - **URL**: `/task-statuses/{id}`
 - **Method**: `DELETE`
+- **Authorization**: Requires `ADMIN` role
 - **URL Parameters**: `id=[integer]` - Status ID
 - **Example**: `/task-statuses/5`
 - **Response**: HTTP 204 (No Content)
@@ -558,6 +577,7 @@ Retrieves a list of all task categories.
 
 - **URL**: `/task-categories`
 - **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **Response**: Array of task category objects
 - **Example Response**:
 
@@ -590,6 +610,7 @@ Retrieves a specific task category by its ID.
 
 - **URL**: `/task-categories/{id}`
 - **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **URL Parameters**: `id=[integer]` - Category ID
 - **Example**: `/task-categories/1`
 - **Response**: Task category object
@@ -600,6 +621,7 @@ Retrieves a specific task category by its name.
 
 - **URL**: `/task-categories/name/{name}`
 - **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
 - **URL Parameters**: `name=[string]` - Category name
 - **Example**: `/task-categories/name/Feature`
 - **Response**: Task category object
@@ -610,6 +632,7 @@ Creates a new task category.
 
 - **URL**: `/task-categories`
 - **Method**: `POST`
+- **Authorization**: Requires `ADMIN` role
 - **Request Body**: Task category data
 - **Example Request**:
 
@@ -629,6 +652,7 @@ Updates an existing task category.
 
 - **URL**: `/task-categories/{id}`
 - **Method**: `PUT`
+- **Authorization**: Requires `ADMIN` role
 - **URL Parameters**: `id=[integer]` - Category ID
 - **Request Body**: Updated task category data
 - **Example**: `/task-categories/6`
@@ -650,11 +674,136 @@ Deletes a task category.
 
 - **URL**: `/task-categories/{id}`
 - **Method**: `DELETE`
+- **Authorization**: Requires `ADMIN` role
 - **URL Parameters**: `id=[integer]` - Category ID
 - **Example**: `/task-categories/6`
 - **Response**: HTTP 204 (No Content)
 
-## API Status
+## Task Priority Endpoints
+
+### Get All Task Priorities
+
+Retrieves a list of all task priorities.
+
+- **URL**: `/task-priorities`
+- **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
+- **Response**: Array of task priority objects
+- **Example Response**:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Low",
+    "description": "Low priority tasks",
+    "value": 1,
+    "color": "#3498db"
+  },
+  {
+    "id": 2,
+    "name": "Medium",
+    "description": "Medium priority tasks",
+    "value": 2,
+    "color": "#f39c12"
+  },
+  {
+    "id": 3,
+    "name": "High",
+    "description": "High priority tasks",
+    "value": 3,
+    "color": "#e74c3c"
+  }
+]
+```
+
+### Get Task Priority by ID
+
+Retrieves a specific task priority by its ID.
+
+- **URL**: `/task-priorities/{id}`
+- **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
+- **URL Parameters**: `id=[integer]` - Priority ID
+- **Example**: `/task-priorities/1`
+- **Response**: Task priority object
+
+### Get Task Priority by Name
+
+Retrieves a specific task priority by its name.
+
+- **URL**: `/task-priorities/name/{name}`
+- **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
+- **URL Parameters**: `name=[string]` - Priority name
+- **Example**: `/task-priorities/name/High`
+- **Response**: Task priority object
+
+### Get Task Priority by Value
+
+Retrieves a specific task priority by its value.
+
+- **URL**: `/task-priorities/value/{value}`
+- **Method**: `GET`
+- **Authorization**: Requires `USER` or `ADMIN` role
+- **URL Parameters**: `value=[integer]` - Priority value
+- **Example**: `/task-priorities/value/3`
+- **Response**: Task priority object
+
+### Create Task Priority
+
+Creates a new task priority.
+
+- **URL**: `/task-priorities`
+- **Method**: `POST`
+- **Authorization**: Requires `ADMIN` role
+- **Request Body**: Task priority data
+- **Example Request**:
+
+```json
+{
+  "name": "Critical",
+  "description": "Critical priority tasks that need immediate attention",
+  "value": 4,
+  "color": "#c0392b"
+}
+```
+
+- **Response**: Created task priority object
+
+### Update Task Priority
+
+Updates an existing task priority.
+
+- **URL**: `/task-priorities/{id}`
+- **Method**: `PUT`
+- **Authorization**: Requires `ADMIN` role
+- **URL Parameters**: `id=[integer]` - Priority ID
+- **Request Body**: Updated task priority data
+- **Example**: `/task-priorities/4`
+- **Example Request**:
+
+```json
+{
+  "name": "Critical",
+  "description": "Critical priority tasks that need immediate attention",
+  "value": 4,
+  "color": "#c0392b"
+}
+```
+
+- **Response**: Updated task priority object
+
+### Delete Task Priority
+
+Deletes a task priority.
+
+- **URL**: `/task-priorities/{id}`
+- **Method**: `DELETE`
+- **Authorization**: Requires `ADMIN` role
+- **URL Parameters**: `id=[integer]` - Priority ID
+- **Example**: `/task-priorities/4`
+- **Response**: HTTP 204 (No Content)
 
 ### Get API Status
 
@@ -662,6 +811,7 @@ Checks if the API is operational.
 
 - **URL**: `/status`
 - **Method**: `GET`
+- **Authorization**: Public (no authentication required)
 - **Response**: Status information
 - **Example Response**:
 
@@ -723,12 +873,79 @@ You can import the following Postman collection to test the API endpoints:
   },
   "item": [
     {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"johndoe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let responseJson = pm.response.json();",
+                  "if (responseJson.token) {",
+                  "  pm.environment.set(\"jwtToken\", responseJson.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"johndoe\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "Tasks",
       "item": [
         {
           "name": "Get All Tasks",
           "request": {
             "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/tasks",
               "host": ["{{baseUrl}}"],
@@ -740,6 +957,12 @@ You can import the following Postman collection to test the API endpoints:
           "name": "Get Task by ID",
           "request": {
             "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/tasks/1",
               "host": ["{{baseUrl}}"],
@@ -751,6 +974,12 @@ You can import the following Postman collection to test the API endpoints:
           "name": "Get Tasks by User ID",
           "request": {
             "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/tasks/user/1",
               "host": ["{{baseUrl}}"],
@@ -766,6 +995,10 @@ You can import the following Postman collection to test the API endpoints:
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
               }
             ],
             "body": {
@@ -787,6 +1020,10 @@ You can import the following Postman collection to test the API endpoints:
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
               }
             ],
             "body": {
@@ -804,6 +1041,12 @@ You can import the following Postman collection to test the API endpoints:
           "name": "Delete Task",
           "request": {
             "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/tasks/1",
               "host": ["{{baseUrl}}"],
@@ -815,6 +1058,12 @@ You can import the following Postman collection to test the API endpoints:
           "name": "Search Tasks",
           "request": {
             "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/tasks/search?keyword=implement",
               "host": ["{{baseUrl}}"],
@@ -827,6 +1076,23 @@ You can import the following Postman collection to test the API endpoints:
               ]
             }
           }
+        },
+        {
+          "name": "Get Overdue Tasks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tasks/overdue/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["tasks", "overdue", "1"]
+            }
+          }
         }
       ]
     },
@@ -837,6 +1103,12 @@ You can import the following Postman collection to test the API endpoints:
           "name": "Get All Users",
           "request": {
             "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/users",
               "host": ["{{baseUrl}}"],
@@ -848,10 +1120,33 @@ You can import the following Postman collection to test the API endpoints:
           "name": "Get User by ID",
           "request": {
             "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/users/1",
               "host": ["{{baseUrl}}"],
               "path": ["users", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get User by Username",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/username/johndoe",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "username", "johndoe"]
             }
           }
         },
@@ -863,6 +1158,10 @@ You can import the following Postman collection to test the API endpoints:
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
               }
             ],
             "body": {
@@ -884,6 +1183,10 @@ You can import the following Postman collection to test the API endpoints:
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
               }
             ],
             "body": {
@@ -901,6 +1204,12 @@ You can import the following Postman collection to test the API endpoints:
           "name": "Delete User",
           "request": {
             "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/users/1",
               "host": ["{{baseUrl}}"],
@@ -917,6 +1226,12 @@ You can import the following Postman collection to test the API endpoints:
           "name": "Get All Task Statuses",
           "request": {
             "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/task-statuses",
               "host": ["{{baseUrl}}"],
@@ -928,10 +1243,33 @@ You can import the following Postman collection to test the API endpoints:
           "name": "Get Task Status by ID",
           "request": {
             "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/task-statuses/1",
               "host": ["{{baseUrl}}"],
               "path": ["task-statuses", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Task Status by Name",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/task-statuses/name/To%20Do",
+              "host": ["{{baseUrl}}"],
+              "path": ["task-statuses", "name", "To%20Do"]
             }
           }
         },
@@ -943,6 +1281,10 @@ You can import the following Postman collection to test the API endpoints:
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
               }
             ],
             "body": {
@@ -964,6 +1306,10 @@ You can import the following Postman collection to test the API endpoints:
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
               }
             ],
             "body": {
@@ -981,6 +1327,12 @@ You can import the following Postman collection to test the API endpoints:
           "name": "Delete Task Status",
           "request": {
             "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/task-statuses/5",
               "host": ["{{baseUrl}}"],
@@ -997,6 +1349,12 @@ You can import the following Postman collection to test the API endpoints:
           "name": "Get All Task Categories",
           "request": {
             "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/task-categories",
               "host": ["{{baseUrl}}"],
@@ -1008,10 +1366,33 @@ You can import the following Postman collection to test the API endpoints:
           "name": "Get Task Category by ID",
           "request": {
             "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/task-categories/1",
               "host": ["{{baseUrl}}"],
               "path": ["task-categories", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Task Category by Name",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/task-categories/name/Feature",
+              "host": ["{{baseUrl}}"],
+              "path": ["task-categories", "name", "Feature"]
             }
           }
         },
@@ -1023,6 +1404,10 @@ You can import the following Postman collection to test the API endpoints:
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
               }
             ],
             "body": {
@@ -1044,6 +1429,10 @@ You can import the following Postman collection to test the API endpoints:
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
               }
             ],
             "body": {
@@ -1061,10 +1450,156 @@ You can import the following Postman collection to test the API endpoints:
           "name": "Delete Task Category",
           "request": {
             "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/task-categories/6",
               "host": ["{{baseUrl}}"],
               "path": ["task-categories", "6"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Task Priorities",
+      "item": [
+        {
+          "name": "Get All Task Priorities",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/task-priorities",
+              "host": ["{{baseUrl}}"],
+              "path": ["task-priorities"]
+            }
+          }
+        },
+        {
+          "name": "Get Task Priority by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/task-priorities/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["task-priorities", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Task Priority by Name",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/task-priorities/name/High",
+              "host": ["{{baseUrl}}"],
+              "path": ["task-priorities", "name", "High"]
+            }
+          }
+        },
+        {
+          "name": "Get Task Priority by Value",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/task-priorities/value/3",
+              "host": ["{{baseUrl}}"],
+              "path": ["task-priorities", "value", "3"]
+            }
+          }
+        },
+        {
+          "name": "Create Task Priority",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Critical\",\n  \"description\": \"Critical priority tasks that need immediate attention\",\n  \"value\": 4,\n  \"color\": \"#c0392b\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/task-priorities",
+              "host": ["{{baseUrl}}"],
+              "path": ["task-priorities"]
+            }
+          }
+        },
+        {
+          "name": "Update Task Priority",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Critical\",\n  \"description\": \"Critical priority tasks that need immediate attention\",\n  \"value\": 4,\n  \"color\": \"#c0392b\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/task-priorities/4",
+              "host": ["{{baseUrl}}"],
+              "path": ["task-priorities", "4"]
+            }
+          }
+        },
+        {
+          "name": "Delete Task Priority",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/task-priorities/4",
+              "host": ["{{baseUrl}}"],
+              "path": ["task-priorities", "4"]
             }
           }
         }
@@ -1108,27 +1643,47 @@ You can import the following Postman collection to test the API endpoints:
 
 ## cURL Examples
 
-Here are cURL commands for common API operations:
+Here are cURL commands for common API operations with authentication:
+
+### Authentication
+
+**Login and extract token:**
+
+```bash
+# Login and get token
+TOKEN=$(curl -X POST "http://localhost:8080/api/auth/login" \
+  -H "Content-Type: application/json" \
+  -d '{"username": "johndoe", "password": "password123"}' | jq -r '.token')
+
+# Save token for later use
+echo $TOKEN
+```
 
 ### Tasks
 
 **Get All Tasks**
 
 ```bash
-curl -X GET http://localhost:8080/api/tasks
+# Using saved token
+curl -X GET "http://localhost:8080/api/tasks" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 **Get Task by ID**
 
 ```bash
-curl -X GET http://localhost:8080/api/tasks/1
+# Using saved token
+curl -X GET "http://localhost:8080/api/tasks/1" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 **Create Task**
 
 ```bash
-curl -X POST http://localhost:8080/api/tasks \
+# Using saved token
+curl -X POST "http://localhost:8080/api/tasks" \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
   -d '{
     "title": "Implement authorization",
     "description": "Implement JWT authorization for the API",
@@ -1143,8 +1698,10 @@ curl -X POST http://localhost:8080/api/tasks \
 **Update Task**
 
 ```bash
-curl -X PUT http://localhost:8080/api/tasks/1 \
+# Using saved token
+curl -X PUT "http://localhost:8080/api/tasks/1" \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
   -d '{
     "title": "Implement JWT authorization",
     "description": "Implement JWT authorization for the API with refresh tokens",
@@ -1159,13 +1716,25 @@ curl -X PUT http://localhost:8080/api/tasks/1 \
 **Delete Task**
 
 ```bash
-curl -X DELETE http://localhost:8080/api/tasks/1
+# Using saved token
+curl -X DELETE "http://localhost:8080/api/tasks/1" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 **Search Tasks**
 
 ```bash
-curl -X GET "http://localhost:8080/api/tasks/search?keyword=implement"
+# Using saved token
+curl -X GET "http://localhost:8080/api/tasks/search?keyword=implement" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Get Overdue Tasks**
+
+```bash
+# Using saved token
+curl -X GET "http://localhost:8080/api/tasks/overdue/1" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 ### Users
@@ -1173,20 +1742,34 @@ curl -X GET "http://localhost:8080/api/tasks/search?keyword=implement"
 **Get All Users**
 
 ```bash
-curl -X GET http://localhost:8080/api/users
+# Using saved token
+curl -X GET "http://localhost:8080/api/users" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 **Get User by ID**
 
 ```bash
-curl -X GET http://localhost:8080/api/users/1
+# Using saved token
+curl -X GET "http://localhost:8080/api/users/1" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Get User by Username**
+
+```bash
+# Using saved token
+curl -X GET "http://localhost:8080/api/users/username/johndoe" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 **Create User**
 
 ```bash
-curl -X POST http://localhost:8080/api/users \
+# Using saved token (requires ADMIN role)
+curl -X POST "http://localhost:8080/api/users" \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
   -d '{
     "username": "marksmith",
     "email": "mark@example.com",
@@ -1199,8 +1782,10 @@ curl -X POST http://localhost:8080/api/users \
 **Update User**
 
 ```bash
-curl -X PUT http://localhost:8080/api/users/1 \
+# Using saved token
+curl -X PUT "http://localhost:8080/api/users/1" \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
   -d '{
     "username": "johndoe",
     "email": "john.doe@example.com",
@@ -1213,7 +1798,9 @@ curl -X PUT http://localhost:8080/api/users/1 \
 **Delete User**
 
 ```bash
-curl -X DELETE http://localhost:8080/api/users/1
+# Using saved token (requires ADMIN role)
+curl -X DELETE "http://localhost:8080/api/users/1" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 ### Task Statuses
@@ -1221,14 +1808,34 @@ curl -X DELETE http://localhost:8080/api/users/1
 **Get All Task Statuses**
 
 ```bash
-curl -X GET http://localhost:8080/api/task-statuses
+# Using saved token
+curl -X GET "http://localhost:8080/api/task-statuses" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Get Task Status by ID**
+
+```bash
+# Using saved token
+curl -X GET "http://localhost:8080/api/task-statuses/1" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Get Task Status by Name**
+
+```bash
+# Using saved token
+curl -X GET "http://localhost:8080/api/task-statuses/name/To%20Do" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 **Create Task Status**
 
 ```bash
-curl -X POST http://localhost:8080/api/task-statuses \
+# Using saved token (requires ADMIN role)
+curl -X POST "http://localhost:8080/api/task-statuses" \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
   -d '{
     "name": "Blocked",
     "description": "Tasks that are blocked by dependencies",
@@ -1236,19 +1843,61 @@ curl -X POST http://localhost:8080/api/task-statuses \
   }'
 ```
 
+**Update Task Status**
+
+```bash
+# Using saved token (requires ADMIN role)
+curl -X PUT "http://localhost:8080/api/task-statuses/5" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{
+    "name": "Blocked",
+    "description": "Tasks that are blocked by external dependencies",
+    "color": "#c0392b"
+  }'
+```
+
+**Delete Task Status**
+
+```bash
+# Using saved token (requires ADMIN role)
+curl -X DELETE "http://localhost:8080/api/task-statuses/5" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
 ### Task Categories
 
 **Get All Task Categories**
 
 ```bash
-curl -X GET http://localhost:8080/api/task-categories
+# Using saved token
+curl -X GET "http://localhost:8080/api/task-categories" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Get Task Category by ID**
+
+```bash
+# Using saved token
+curl -X GET "http://localhost:8080/api/task-categories/1" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Get Task Category by Name**
+
+```bash
+# Using saved token
+curl -X GET "http://localhost:8080/api/task-categories/name/Feature" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 **Create Task Category**
 
 ```bash
-curl -X POST http://localhost:8080/api/task-categories \
+# Using saved token (requires ADMIN role)
+curl -X POST "http://localhost:8080/api/task-categories" \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
   -d '{
     "name": "Infrastructure",
     "description": "Infrastructure related tasks",
@@ -1256,10 +1905,105 @@ curl -X POST http://localhost:8080/api/task-categories \
   }'
 ```
 
+**Update Task Category**
+
+```bash
+# Using saved token (requires ADMIN role)
+curl -X PUT "http://localhost:8080/api/task-categories/6" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{
+    "name": "Infrastructure",
+    "description": "Tasks related to infrastructure and deployment",
+    "color": "#8e44ad"
+  }'
+```
+
+**Delete Task Category**
+
+```bash
+# Using saved token (requires ADMIN role)
+curl -X DELETE "http://localhost:8080/api/task-categories/6" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+### Task Priorities
+
+**Get All Task Priorities**
+
+```bash
+# Using saved token
+curl -X GET "http://localhost:8080/api/task-priorities" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Get Task Priority by ID**
+
+```bash
+# Using saved token
+curl -X GET "http://localhost:8080/api/task-priorities/1" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Get Task Priority by Name**
+
+```bash
+# Using saved token
+curl -X GET "http://localhost:8080/api/task-priorities/name/High" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Get Task Priority by Value**
+
+```bash
+# Using saved token
+curl -X GET "http://localhost:8080/api/task-priorities/value/3" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Create Task Priority**
+
+```bash
+# Using saved token (requires ADMIN role)
+curl -X POST "http://localhost:8080/api/task-priorities" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{
+    "name": "Critical",
+    "description": "Critical priority tasks that need immediate attention",
+    "value": 4,
+    "color": "#c0392b"
+  }'
+```
+
+**Update Task Priority**
+
+```bash
+# Using saved token (requires ADMIN role)
+curl -X PUT "http://localhost:8080/api/task-priorities/4" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{
+    "name": "Critical",
+    "description": "Critical priority tasks that need immediate attention",
+    "value": 4,
+    "color": "#c0392b"
+  }'
+```
+
+**Delete Task Priority**
+
+```bash
+# Using saved token (requires ADMIN role)
+curl -X DELETE "http://localhost:8080/api/task-priorities/4" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
 ### API Status
 
 **Get API Status**
 
 ```bash
-curl -X GET http://localhost:8080/api/status
+# No token needed (public endpoint)
+curl -X GET "http://localhost:8080/api/status"
 ```
