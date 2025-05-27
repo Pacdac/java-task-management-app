@@ -65,7 +65,7 @@ class AuthControllerTest {
         RegistrationDTO registrationDTO = new RegistrationDTO();
         registrationDTO.setUsername("newuser");
         registrationDTO.setEmail("newuser@example.com");
-        registrationDTO.setPassword("password123");
+        registrationDTO.setPassword("password123456789");
         registrationDTO.setFirstName("New");
         registrationDTO.setLastName("User");
 
@@ -77,12 +77,8 @@ class AuthControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.username", is("newuser")))
-                .andExpect(jsonPath("$.email", is("newuser@example.com")))
-                .andExpect(jsonPath("$.firstName", is("New")))
-                .andExpect(jsonPath("$.lastName", is("User")))
-                .andExpect(jsonPath("$.role", is("USER")))
-                .andExpect(jsonPath("$.id", notNullValue()))
-                .andExpect(jsonPath("$.password").doesNotExist()); // Password should not be returned
+                .andExpect(jsonPath("$.token", notNullValue()))
+                .andExpect(jsonPath("$.authorities[0].authority", is("ROLE_USER")));
     }
 
     @Test
