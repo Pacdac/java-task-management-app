@@ -41,7 +41,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         final String jwt = authHeader.substring(7);
 
-        // Add validation to ensure JWT is not empty or malformed
         if (jwt.trim().isEmpty()) {
             filterChain.doFilter(request, response);
             return;
@@ -61,7 +60,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception e) {
-            // Log the error but continue with the filter chain
             System.err.println("JWT Authentication failed: " + e.getMessage());
         }
 

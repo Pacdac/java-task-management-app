@@ -34,14 +34,12 @@ class TaskStatusServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Setup test TaskStatus entity
         testTaskStatus = new TaskStatus();
         testTaskStatus.setId(1);
         testTaskStatus.setName("TODO");
         testTaskStatus.setDescription("To Do");
         testTaskStatus.setColor("#FF0000");
 
-        // Setup test TaskStatusDTO
         testTaskStatusDTO = new TaskStatusDTO();
         testTaskStatusDTO.setId(1);
         testTaskStatusDTO.setName("TODO");
@@ -170,7 +168,6 @@ class TaskStatusServiceTest {
 
         taskStatusService.deleteTaskStatus(1);
 
-        // No exception should be thrown
     }
 
     @Test

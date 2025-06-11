@@ -81,7 +81,6 @@ export class AuthService {
   private handleAuthentication(response: AuthResponse): void {
     const { token, username, authorities } = response;
 
-    // Extract role names from authorities array
     const roles = authorities?.map((auth) => auth.authority) || [];
 
     const user: User = { username, roles, authorities };
@@ -108,21 +107,17 @@ export class AuthService {
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
-  // Update user information in local storage and subject
+
   updateUserInfo(updatedUser: any): void {
     const currentUser = this.currentUserSubject.value;
     if (currentUser) {
-      // Keep the current username since it doesn't change
-      // Only update email if it exists in the updated user
       const updatedUserObj = {
         ...currentUser,
         email: updatedUser.email || currentUser.email,
       };
 
-      // Update local storage
       localStorage.setItem(this.userKey, JSON.stringify(updatedUserObj));
 
-      // Update subject
       this.currentUserSubject.next(updatedUserObj);
     }
   }

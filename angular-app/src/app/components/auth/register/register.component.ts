@@ -22,10 +22,9 @@ export class RegisterComponent {
   loading = false;
   error = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
   onSubmit(): void {
-    // Validate form
     if (
       !this.registerForm.username ||
       !this.registerForm.email ||
@@ -44,7 +43,6 @@ export class RegisterComponent {
     this.loading = true;
     this.error = '';
 
-    // Extract data for API request (exclude confirmPassword)
     const registrationData = {
       username: this.registerForm.username,
       email: this.registerForm.email,
@@ -53,7 +51,6 @@ export class RegisterComponent {
 
     this.authService.register(registrationData).subscribe({
       next: () => {
-        // Navigate to tasks page on successful registration
         this.router.navigate(['/tasks']);
       },
       error: (error) => {

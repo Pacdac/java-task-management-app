@@ -9,8 +9,8 @@ export interface User {
   email: string;
   firstName?: string;
   lastName?: string;
-  password?: string; // Add optional password field for profile updates
-  role: string; // e.g., 'USER', 'ADMIN'
+  password?: string;
+  role: string;
   createdAt: string;
   lastLogin?: string;
 }
@@ -21,13 +21,13 @@ export interface User {
 export class UserService {
   private apiUrl = 'http://localhost:8080/api/users';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   /**
    * Get all users (admin only)
    */ getAllUsers(): Observable<User[]> {
     return this.http.get<any>(this.apiUrl).pipe(
       map((response) => {
-        // Handle different response formats
+
         let users: User[];
 
         if (Array.isArray(response)) {
@@ -37,10 +37,8 @@ export class UserService {
           response.content &&
           Array.isArray(response.content)
         ) {
-          // Handle paginated response
           users = response.content;
         } else if (response && typeof response === 'object') {
-          // Handle single user wrapped in object
           users = [response];
         } else {
           console.error('Unexpected API response format:', response);

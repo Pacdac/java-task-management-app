@@ -23,7 +23,7 @@ export class ProfilePageComponent implements OnInit {
   constructor(
     private userService: UserService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadUserProfile();
@@ -71,15 +71,12 @@ export class ProfilePageComponent implements OnInit {
       return;
     }
 
-    // Create a copy of the form data
     const updateData = { ...this.formData };
 
-    // Ensure username is included in the request
     if (!updateData.username && this.user) {
       updateData.username = this.user.username;
     }
 
-    // If password is empty, remove it from the request, meaning no change
     if (!updateData.password) {
       delete updateData.password;
     }
@@ -94,7 +91,6 @@ export class ProfilePageComponent implements OnInit {
         this.loading = false;
         this.editMode = false;
 
-        // Update auth user info with email changes
         const currentUser = this.authService.getCurrentUser();
         if (currentUser?.email !== updatedUser.email) {
           this.authService.updateUserInfo(updatedUser);

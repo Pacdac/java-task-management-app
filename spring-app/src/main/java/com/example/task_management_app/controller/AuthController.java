@@ -46,22 +46,18 @@ public class AuthController {
     public ResponseEntity<AuthResponseDTO> register(@Valid @RequestBody RegistrationDTO registrationDTO) {
 
         try {
-            // Additional validation
             validateRegistrationData(registrationDTO);
 
-            // Convert registration DTO to user DTO
             UserDTO userDTO = new UserDTO();
             userDTO.setUsername(registrationDTO.getUsername());
             userDTO.setEmail(registrationDTO.getEmail());
             userDTO.setPassword(registrationDTO.getPassword());
             userDTO.setFirstName(registrationDTO.getFirstName());
             userDTO.setLastName(registrationDTO.getLastName());
-            userDTO.setRole("USER"); // Default role for new registrations
+            userDTO.setRole("USER");
 
-            // Create user using the existing service
             UserDTO createdUser = userService.createUser(userDTO);
 
-            // Get a JWT token for the newly created user
             UserDetails userDetails = userDetailsService.loadUserByUsername(createdUser.getUsername());
             String token = jwtUtil.generateToken(userDetails);
 
@@ -80,7 +76,6 @@ public class AuthController {
         try {
             validateLoginData(request);
 
-            // Authenticate user
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
@@ -96,7 +91,7 @@ public class AuthController {
         } catch (AuthenticationException e) {
             throw new AuthenticationFailedException("Authentication failed");
         } catch (Exception e) {
-            throw e; // Re-throw to let GlobalExceptionHandler handle it
+            throw e;
         }
     }
 
@@ -116,7 +111,6 @@ public class AuthController {
             throw new InvalidAuthenticationDataException("Password must be at least 12 characters long");
         }
 
-        // Username validation
         if (registrationDTO.getUsername().length() < 3) {
             throw new InvalidAuthenticationDataException("Username must be at least 3 characters long");
         }

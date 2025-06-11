@@ -20,8 +20,8 @@ public class TestSecurityConfig {
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .httpBasic(basic -> {
-                }) // Enable HTTP Basic authentication for tests
-                .formLogin(form -> form.disable()); // Disable form login
+                })
+                .formLogin(form -> form.disable());
         return http.build();
     }
 

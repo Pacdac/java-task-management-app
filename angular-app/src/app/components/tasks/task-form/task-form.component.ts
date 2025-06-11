@@ -17,8 +17,8 @@ export class TaskFormComponent implements OnInit {
   @Input() task: Task | Partial<Task> = {
     title: '',
     description: '',
-    statusId: 1, // Default to "To Do"
-    priorityId: 3, // Default to medium priority
+    statusId: 1,
+    priorityId: 3,
   };
 
   @Output() save = new EventEmitter<Task>();
@@ -30,19 +30,17 @@ export class TaskFormComponent implements OnInit {
   constructor(
     public statusService: StatusService,
     public priorityService: PriorityService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    // Ensure we have the latest data from the backend
     this.statusService.loadStatuses().subscribe();
     this.priorityService.loadPriorities().subscribe();
   }
   saveTask(): void {
     if (!this.task.title || !this.task.description) {
-      return; // Let parent component handle validation
+      return;
     }
 
-    // Format date to ISO format if it exists
     if (this.task.dueDate && typeof this.task.dueDate === 'string') {
       const date = new Date(this.task.dueDate);
       if (!isNaN(date.getTime())) {
@@ -50,11 +48,10 @@ export class TaskFormComponent implements OnInit {
       }
     }
 
-    // Ensure statusId and priorityId are numbers
     const taskToSave: Task = {
       ...this.task,
-      statusId: Number(this.task.statusId) || 1, // Default to first status
-      priorityId: Number(this.task.priorityId) || 3, // Default to medium priority
+      statusId: Number(this.task.statusId) || 1,
+      priorityId: Number(this.task.priorityId) || 3,
     } as Task;
 
     this.save.emit(taskToSave);

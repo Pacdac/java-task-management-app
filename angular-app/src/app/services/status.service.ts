@@ -74,7 +74,6 @@ export class StatusService {
     if (statuses.length > 0) {
       return statuses;
     } else {
-      // Set the fallback statuses in the subject if we're using them
       this.statusesSubject.next(this.fallbackStatuses);
       return this.fallbackStatuses;
     }
@@ -128,7 +127,7 @@ export class StatusService {
   createStatus(status: Omit<StatusInfo, 'id'>): Observable<StatusInfo> {
     return this.http.post<StatusInfo>(this.apiUrl, status).pipe(
       map((newStatus) => {
-        this.loadStatuses().subscribe(); // Refresh cache
+        this.loadStatuses().subscribe();
         return newStatus;
       })
     );
@@ -142,7 +141,7 @@ export class StatusService {
       .put<StatusInfo>(`${this.apiUrl}/${status.id}`, status)
       .pipe(
         map((updatedStatus) => {
-          this.loadStatuses().subscribe(); // Refresh cache
+          this.loadStatuses().subscribe();
           return updatedStatus;
         })
       );
@@ -154,7 +153,7 @@ export class StatusService {
   deleteStatus(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
       map(() => {
-        this.loadStatuses().subscribe(); // Refresh cache
+        this.loadStatuses().subscribe();
       })
     );
   }

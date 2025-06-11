@@ -52,11 +52,10 @@ class TaskCategoryControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Clean up existing data
+
         taskCategoryRepository.deleteAll();
         userRepository.deleteAll();
 
-        // Create test user
         testUser = new User();
         testUser.setUsername("testuser");
         testUser.setEmail("test@example.com");
@@ -64,7 +63,6 @@ class TaskCategoryControllerTest {
         testUser.setRole("USER");
         testUser = userRepository.save(testUser);
 
-        // Create test task category
         testTaskCategory = new TaskCategory();
         testTaskCategory.setName("Work");
         testTaskCategory.setDescription("Work related tasks");
@@ -75,7 +73,7 @@ class TaskCategoryControllerTest {
     @Test
     @WithMockUser
     void getAllTaskCategories_ShouldReturnAllCategories() throws Exception {
-        // Create additional test category
+
         TaskCategory anotherCategory = new TaskCategory();
         anotherCategory.setName("Personal");
         anotherCategory.setDescription("Personal tasks");
@@ -157,7 +155,7 @@ class TaskCategoryControllerTest {
     @WithMockUser
     void createTaskCategory_ShouldReturnBadRequest_WhenNameIsEmpty() throws Exception {
         TaskCategoryDTO newTaskCategoryDTO = new TaskCategoryDTO();
-        newTaskCategoryDTO.setName(""); // Empty name
+        newTaskCategoryDTO.setName("");
         newTaskCategoryDTO.setDescription("Study related tasks");
         newTaskCategoryDTO.setColor("#00CC66");
 
@@ -173,7 +171,7 @@ class TaskCategoryControllerTest {
     @WithMockUser
     void createTaskCategory_ShouldReturnBadRequest_WhenNameIsNull() throws Exception {
         TaskCategoryDTO newTaskCategoryDTO = new TaskCategoryDTO();
-        newTaskCategoryDTO.setName(null); // Null name
+        newTaskCategoryDTO.setName(null);
         newTaskCategoryDTO.setDescription("Study related tasks");
         newTaskCategoryDTO.setColor("#00CC66");
 
@@ -226,7 +224,7 @@ class TaskCategoryControllerTest {
     @WithMockUser
     void updateTaskCategory_ShouldReturnBadRequest_WhenNameIsEmpty() throws Exception {
         TaskCategoryDTO updateTaskCategoryDTO = new TaskCategoryDTO();
-        updateTaskCategoryDTO.setName(""); // Empty name
+        updateTaskCategoryDTO.setName("");
         updateTaskCategoryDTO.setDescription("Updated description");
         updateTaskCategoryDTO.setColor("#FF00FF");
 
@@ -244,7 +242,6 @@ class TaskCategoryControllerTest {
         mockMvc.perform(delete("/api/task-categories/{id}", testTaskCategory.getId()))
                 .andExpect(status().isNoContent());
 
-        // Verify category was deleted
         mockMvc.perform(get("/api/task-categories/{id}", testTaskCategory.getId()))
                 .andExpect(status().isNotFound());
     }

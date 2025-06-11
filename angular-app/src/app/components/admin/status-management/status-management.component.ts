@@ -21,11 +21,10 @@ export class StatusManagementComponent implements OnInit {
   };
   isAdding = false;
 
-  constructor(private statusService: StatusService) {}
+  constructor(private statusService: StatusService) { }
 
   ngOnInit(): void {
     this.loadStatuses();
-    // Subscribe to status changes
     this.statusService.statuses$.subscribe((statuses) => {
       this.statuses = statuses;
     });

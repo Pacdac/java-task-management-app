@@ -15,10 +15,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
   private authSubscription: Subscription | undefined;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
-    // Subscribe to authentication state changes
     this.authSubscription = this.authService.isAuthenticated$.subscribe(
       (isAuth) => {
         this.isAuthenticated = isAuth;
@@ -27,7 +26,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Clean up subscription to prevent memory leaks
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
     }

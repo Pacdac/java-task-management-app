@@ -103,12 +103,10 @@ public class TaskService {
         Task existingTask = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
 
-        // Update the fields
         existingTask.setTitle(taskDTO.getTitle());
         existingTask.setDescription(taskDTO.getDescription());
         existingTask.setDueDate(taskDTO.getDueDate());
 
-        // Update priority if present
         if (taskDTO.getPriorityId() != null) {
             TaskPriority priority = taskPriorityRepository.findById(taskDTO.getPriorityId())
                     .orElseThrow(() -> new ResourceNotFoundException(
@@ -116,14 +114,12 @@ public class TaskService {
             existingTask.setPriority(priority);
         }
 
-        // Update user if present
         if (taskDTO.getUserId() != null) {
             User user = userRepository.findById(taskDTO.getUserId())
                     .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + taskDTO.getUserId()));
             existingTask.setUser(user);
         }
 
-        // Update status if present
         if (taskDTO.getStatusId() != null) {
             TaskStatus status = taskStatusRepository.findById(taskDTO.getStatusId())
                     .orElseThrow(
@@ -131,7 +127,6 @@ public class TaskService {
             existingTask.setStatus(status);
         }
 
-        // Update category if present
         if (taskDTO.getCategoryId() != null) {
             TaskCategory category = taskCategoryRepository.findById(taskDTO.getCategoryId())
                     .orElseThrow(() -> new ResourceNotFoundException(
@@ -231,7 +226,6 @@ public class TaskService {
     private Task convertToEntity(TaskDTO taskDTO) {
         Task task = new Task();
 
-        // Don't set ID for new tasks, let the database generate it
         if (taskDTO.getId() != null) {
             task.setId(taskDTO.getId());
         }
@@ -239,15 +233,12 @@ public class TaskService {
         task.setDescription(taskDTO.getDescription());
         task.setDueDate(taskDTO.getDueDate());
 
-        // Set user if userId is present
         if (taskDTO.getUserId() != null) {
             User user = userRepository.findById(taskDTO.getUserId())
                     .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + taskDTO.getUserId()));
             task.setUser(user);
         }
 
-        // Set priority - try by priorityId first, then fall back to priorityValue for
-        // compatibility
         if (taskDTO.getPriorityId() != null) {
             TaskPriority priority = taskPriorityRepository.findById(taskDTO.getPriorityId())
                     .orElseThrow(() -> new ResourceNotFoundException(
@@ -260,7 +251,6 @@ public class TaskService {
             task.setPriority(priority);
         }
 
-        // Set status if statusId is present
         if (taskDTO.getStatusId() != null) {
             TaskStatus status = taskStatusRepository.findById(taskDTO.getStatusId())
                     .orElseThrow(
@@ -268,7 +258,6 @@ public class TaskService {
             task.setStatus(status);
         }
 
-        // Set category if categoryId is present
         if (taskDTO.getCategoryId() != null) {
             TaskCategory category = taskCategoryRepository.findById(taskDTO.getCategoryId())
                     .orElseThrow(() -> new ResourceNotFoundException(

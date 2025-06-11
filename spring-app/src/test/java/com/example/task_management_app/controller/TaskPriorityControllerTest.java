@@ -53,11 +53,10 @@ class TaskPriorityControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Clean up existing data
+
         taskPriorityRepository.deleteAll();
         userRepository.deleteAll();
 
-        // Create test user
         testUser = new User();
         testUser.setUsername("testuser");
         testUser.setEmail("test@example.com");
@@ -65,7 +64,6 @@ class TaskPriorityControllerTest {
         testUser.setRole("USER");
         testUser = userRepository.save(testUser);
 
-        // Create test admin
         testAdmin = new User();
         testAdmin.setUsername("admin");
         testAdmin.setEmail("admin@example.com");
@@ -73,7 +71,6 @@ class TaskPriorityControllerTest {
         testAdmin.setRole("ADMIN");
         testAdmin = userRepository.save(testAdmin);
 
-        // Create test task priority
         testTaskPriority = new TaskPriority();
         testTaskPriority.setName("High");
         testTaskPriority.setValue(3);
@@ -86,7 +83,7 @@ class TaskPriorityControllerTest {
     @Test
     @WithMockUser
     void getAllTaskPriorities_ShouldReturnAllPriorities() throws Exception {
-        // Create additional test priority
+
         TaskPriority anotherPriority = new TaskPriority();
         anotherPriority.setName("Low");
         anotherPriority.setValue(1);
@@ -221,7 +218,7 @@ class TaskPriorityControllerTest {
     @WithMockUser(roles = "ADMIN")
     void createTaskPriority_ShouldReturnBadRequest_WhenNameIsEmpty() throws Exception {
         TaskPriorityDTO newTaskPriorityDTO = new TaskPriorityDTO();
-        newTaskPriorityDTO.setName(""); // Empty name
+        newTaskPriorityDTO.setName("");
         newTaskPriorityDTO.setValue(2);
         newTaskPriorityDTO.setDescription("Medium priority task");
         newTaskPriorityDTO.setColor("#FFFF00");
@@ -240,7 +237,7 @@ class TaskPriorityControllerTest {
     void createTaskPriority_ShouldReturnBadRequest_WhenValueIsNull() throws Exception {
         TaskPriorityDTO newTaskPriorityDTO = new TaskPriorityDTO();
         newTaskPriorityDTO.setName("Medium");
-        newTaskPriorityDTO.setValue(null); // Null value
+        newTaskPriorityDTO.setValue(null);
         newTaskPriorityDTO.setDescription("Medium priority task");
         newTaskPriorityDTO.setColor("#FFFF00");
         newTaskPriorityDTO.setDisplayOrder(2);
@@ -320,7 +317,6 @@ class TaskPriorityControllerTest {
         mockMvc.perform(delete("/api/task-priorities/{id}", testTaskPriority.getId()))
                 .andExpect(status().isNoContent());
 
-        // Verify priority was deleted
         mockMvc.perform(get("/api/task-priorities/{id}", testTaskPriority.getId()))
                 .andExpect(status().isNotFound());
     }

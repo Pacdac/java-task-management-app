@@ -49,7 +49,7 @@ export class PriorityService {
   ];
   constructor(private http: HttpClient) {
     this.loadPriorities().subscribe(
-      () => {},
+      () => { },
       (error) => console.error('Error loading priorities:', error)
     );
   }
@@ -125,7 +125,7 @@ export class PriorityService {
   createPriority(priority: Omit<Priority, 'id'>): Observable<Priority> {
     return this.http.post<Priority>(this.apiUrl, priority).pipe(
       map((newPriority) => {
-        this.loadPriorities().subscribe(); // Refresh cache
+        this.loadPriorities().subscribe();
         return newPriority;
       })
     );
@@ -139,7 +139,7 @@ export class PriorityService {
       .put<Priority>(`${this.apiUrl}/${priority.id}`, priority)
       .pipe(
         map((updatedPriority) => {
-          this.loadPriorities().subscribe(); // Refresh cache
+          this.loadPriorities().subscribe();
           return updatedPriority;
         })
       );
@@ -151,7 +151,7 @@ export class PriorityService {
   deletePriority(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
       map(() => {
-        this.loadPriorities().subscribe(); // Refresh cache
+        this.loadPriorities().subscribe();
       })
     );
   }
@@ -160,6 +160,6 @@ export class PriorityService {
    * Get the default priority ID (Medium)
    */
   getDefaultPriorityId(): number {
-    return 2; // Medium priority
+    return 2;
   }
 }

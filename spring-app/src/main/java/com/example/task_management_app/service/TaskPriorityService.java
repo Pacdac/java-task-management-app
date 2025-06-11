@@ -76,13 +76,12 @@ public class TaskPriorityService {
      */
     @Transactional
     public TaskPriorityDTO createTaskPriority(TaskPriorityDTO taskPriorityDTO) {
-        // Check if priority name already exists
+
         if (taskPriorityRepository.existsByName(taskPriorityDTO.getName())) {
             throw new IllegalArgumentException(
                     "Task priority with name '" + taskPriorityDTO.getName() + "' already exists");
         }
 
-        // Check if priority value already exists
         if (taskPriorityRepository.existsByValue(taskPriorityDTO.getValue())) {
             throw new IllegalArgumentException(
                     "Task priority with value '" + taskPriorityDTO.getValue() + "' already exists");
@@ -105,21 +104,18 @@ public class TaskPriorityService {
         TaskPriority existingTaskPriority = taskPriorityRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task priority not found with id: " + id));
 
-        // Check if name is being changed and already exists
         if (!existingTaskPriority.getName().equals(taskPriorityDTO.getName()) &&
                 taskPriorityRepository.existsByName(taskPriorityDTO.getName())) {
             throw new IllegalArgumentException(
                     "Task priority with name '" + taskPriorityDTO.getName() + "' already exists");
         }
 
-        // Check if value is being changed and already exists
         if (!existingTaskPriority.getValue().equals(taskPriorityDTO.getValue()) &&
                 taskPriorityRepository.existsByValue(taskPriorityDTO.getValue())) {
             throw new IllegalArgumentException(
                     "Task priority with value '" + taskPriorityDTO.getValue() + "' already exists");
         }
 
-        // Update fields
         existingTaskPriority.setName(taskPriorityDTO.getName());
         existingTaskPriority.setValue(taskPriorityDTO.getValue());
         existingTaskPriority.setDescription(taskPriorityDTO.getDescription());
@@ -169,7 +165,6 @@ public class TaskPriorityService {
     private TaskPriority convertToEntity(TaskPriorityDTO taskPriorityDTO) {
         TaskPriority taskPriority = new TaskPriority();
 
-        // Don't set ID for new task priorities, let the database generate it
         if (taskPriorityDTO.getId() != null) {
             taskPriority.setId(taskPriorityDTO.getId());
         }

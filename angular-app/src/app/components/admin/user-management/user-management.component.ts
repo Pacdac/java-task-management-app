@@ -14,12 +14,12 @@ import { UserService, User } from '../../../services/user.service';
 export class UserManagementComponent implements OnInit {
   users: User[] = [];
   editingUser: User | null = null;
-  originalUser: User | null = null; // Store original user data
+  originalUser: User | null = null;
   isLoading = false;
   error: string | null = null;
   availableRoles = ['USER', 'ADMIN'];
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.loadUsers();
@@ -42,13 +42,10 @@ export class UserManagementComponent implements OnInit {
   }
 
   startEdit(user: User): void {
-    // Store the original user data
     this.originalUser = { ...user };
 
-    // Create a copy of the user for editing
     this.editingUser = {
       ...user,
-      // Ensure role is without ROLE_ prefix for the dropdown
       role: user.role?.replace('ROLE_', '') || 'USER',
     };
   }
@@ -61,7 +58,6 @@ export class UserManagementComponent implements OnInit {
   hasChanges(): boolean {
     if (!this.editingUser || !this.originalUser) return false;
 
-    // Compare relevant fields
     const normalizedOriginalRole = this.originalUser.role.replace('ROLE_', '');
     const normalizedEditingRole = this.editingUser.role.replace('ROLE_', '');
 
@@ -74,7 +70,6 @@ export class UserManagementComponent implements OnInit {
   saveUser(): void {
     if (!this.editingUser) return;
 
-    // Check if there are any actual changes
     if (!this.hasChanges()) {
       this.editingUser = null;
       this.originalUser = null;

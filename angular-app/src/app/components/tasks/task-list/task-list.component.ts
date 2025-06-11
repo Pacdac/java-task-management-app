@@ -22,18 +22,17 @@ export class TaskListComponent implements OnInit, OnDestroy {
   error = '';
   private taskSubscription: Subscription | undefined;
 
-  // Form for new task
   newTask: Partial<Task> = {
     title: '',
     description: '',
-    statusId: 1, // Default to "To Do"
-    priorityId: 3, // Default to medium priority
+    statusId: 1,
+    priorityId: 3,
   };
-  // For task editing and creation
+
   taskForEdit: Task | null = null;
   showTaskForm = false;
   formMode: 'create' | 'edit' = 'create';
-  // For task filtering
+
   filterStatus: string = '';
   filterPriority: string = '';
   searchTerm: string = '';
@@ -42,18 +41,17 @@ export class TaskListComponent implements OnInit, OnDestroy {
     private taskService: TaskService,
     public statusService: StatusService,
     public priorityService: PriorityService
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.loadTasks();
 
-    // Ensure statuses and priorities are loaded
     this.statusService.loadStatuses().subscribe(
-      () => {},
+      () => { },
       (error) => console.error('Error loading statuses:', error)
     );
 
     this.priorityService.loadPriorities().subscribe(
-      () => {},
+      () => { },
       (error) => console.error('Error loading priorities:', error)
     );
   }
@@ -75,7 +73,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
             err.error?.message ||
             'Failed to load tasks. Please try again later.';
           console.error('Error loading tasks:', err);
-          return []; // Return empty array on error
+          return [];
         }),
         finalize(() => {
           this.loading = false;
@@ -87,7 +85,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
           console.log('Tasks loaded successfully:', tasks);
         },
         error: (err) => {
-          this.tasks = []; // Reset tasks array on error
+          this.tasks = [];
           console.error('Error in task subscription:', err);
         },
       });
@@ -109,13 +107,12 @@ export class TaskListComponent implements OnInit, OnDestroy {
             err.error?.message ||
             'Failed to update task. Please try again later.';
           console.error('Error updating task:', err);
-          // Revert the status change in the UI
+
           task.statusId = originalStatusId;
           throw err;
         })
       )
       .subscribe((result) => {
-        // Update the local task with returned data
         const index = this.tasks.findIndex((t) => t.id === result.id);
         if (index !== -1) {
           this.tasks[index] = result;
@@ -150,7 +147,6 @@ export class TaskListComponent implements OnInit, OnDestroy {
   }
   get filteredTasks(): Task[] {
     return this.tasks.filter((task) => {
-      // Filter by statusId
       if (
         this.filterStatus &&
         (task.statusId || 0) !== Number(this.filterStatus)
@@ -158,7 +154,6 @@ export class TaskListComponent implements OnInit, OnDestroy {
         return false;
       }
 
-      // Filter by priorityId
       if (
         this.filterPriority &&
         (task.priorityId || 0) !== Number(this.filterPriority)
@@ -166,7 +161,6 @@ export class TaskListComponent implements OnInit, OnDestroy {
         return false;
       }
 
-      // Filter by search term
       if (this.searchTerm) {
         const searchTerm = this.searchTerm.toLowerCase();
         const title = (task.title || '').toString().toLowerCase();
@@ -238,7 +232,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
       });
   }
   private updateExistingTask(task: Task): void {
-    // Ensure statusId and priorityId are properly set
+
     const taskToUpdate = {
       ...task,
       statusId: task.statusId || 1,
@@ -260,7 +254,6 @@ export class TaskListComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((updatedTask) => {
-        // Update the local task with returned data
         const index = this.tasks.findIndex((t) => t.id === updatedTask.id);
         if (index !== -1) {
           this.tasks[index] = updatedTask;

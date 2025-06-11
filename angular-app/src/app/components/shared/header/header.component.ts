@@ -15,12 +15,11 @@ export class HeaderComponent implements OnInit {
   isAdmin = false;
   username: string | null = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     this.authService.isAuthenticated$.subscribe((isAuth) => {
       this.isAuthenticated = isAuth;
-      // Check admin status whenever authentication changes
       this.isAdmin = this.authService.isAdmin();
       console.log('User authentication status:', this.isAuthenticated);
       console.log('User admin status:', this.isAdmin);

@@ -26,7 +26,7 @@ public class TaskDTO {
 
     private String priorityName;
 
-    private Integer priorityValue; // The numeric value for compatibility
+    private Integer priorityValue;
 
     private OffsetDateTime createdAt;
 

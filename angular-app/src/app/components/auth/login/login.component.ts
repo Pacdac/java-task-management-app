@@ -26,7 +26,6 @@ export class LoginComponent {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    // Get return URL from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 

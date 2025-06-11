@@ -62,7 +62,7 @@ public class TaskControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Create test user
+
         testUser = new User();
         testUser.setUsername("testuser");
         testUser.setEmail("test@example.com");
@@ -72,21 +72,18 @@ public class TaskControllerTest {
         testUser.setRole("USER");
         testUser = userRepository.save(testUser);
 
-        // Create test status
         testStatus = new TaskStatus();
         testStatus.setName("To Do");
         testStatus.setDescription("Task to be done");
         testStatus.setColor("#FF0000");
         testStatus = taskStatusRepository.save(testStatus);
 
-        // Create test category
         testCategory = new TaskCategory();
         testCategory.setName("Work");
         testCategory.setDescription("Work related tasks");
         testCategory.setColor("#00FF00");
         testCategory = taskCategoryRepository.save(testCategory);
 
-        // Create test priority
         testPriority = new TaskPriority();
         testPriority.setName("High");
         testPriority.setValue(3);
@@ -95,7 +92,6 @@ public class TaskControllerTest {
         testPriority.setDisplayOrder(1);
         testPriority = taskPriorityRepository.save(testPriority);
 
-        // Create test task
         testTask = new Task();
         testTask.setTitle("Test Task");
         testTask.setDescription("Test task description");
@@ -223,7 +219,7 @@ public class TaskControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     public void getOverdueTasks_ReturnsOverdueTasks() throws Exception {
-        // Create an overdue task
+
         Task overdueTask = new Task();
         overdueTask.setTitle("Overdue Task");
         overdueTask.setDescription("This task is overdue");

@@ -39,7 +39,6 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Setup test User entity
         testUser = new User();
         testUser.setId(1);
         testUser.setUsername("testuser");
@@ -47,7 +46,6 @@ class UserServiceTest {
         testUser.setPasswordHash("hashedpassword123");
         testUser.setRole("ROLE_USER");
 
-        // Setup test UserDTO
         testUserDTO = new UserDTO();
         testUserDTO.setId(1);
         testUserDTO.setUsername("testuser");

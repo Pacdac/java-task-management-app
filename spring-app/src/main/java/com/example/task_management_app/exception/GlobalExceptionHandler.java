@@ -18,152 +18,150 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
-            ResourceNotFoundException ex, WebRequest request) {
+        @ExceptionHandler(ResourceNotFoundException.class)
+        public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
+                        ResourceNotFoundException ex, WebRequest request) {
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
-                ex.getMessage(),
-                LocalDateTime.now(),
-                request.getDescription(false));
+                ErrorResponse errorResponse = new ErrorResponse(
+                                HttpStatus.NOT_FOUND.value(),
+                                ex.getMessage(),
+                                LocalDateTime.now(),
+                                request.getDescription(false));
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-    }
+                return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ValidationErrorResponse> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
+        @ExceptionHandler(MethodArgumentNotValidException.class)
+        public ResponseEntity<ValidationErrorResponse> handleValidationExceptions(
+                        MethodArgumentNotValidException ex) {
 
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
+                Map<String, String> errors = new HashMap<>();
+                ex.getBindingResult().getAllErrors().forEach((error) -> {
+                        String fieldName = ((FieldError) error).getField();
+                        String errorMessage = error.getDefaultMessage();
+                        errors.put(fieldName, errorMessage);
+                });
 
-        ValidationErrorResponse errorResponse = new ValidationErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                "Validation failed",
-                LocalDateTime.now(),
-                errors);
+                ValidationErrorResponse errorResponse = new ValidationErrorResponse(
+                                HttpStatus.BAD_REQUEST.value(),
+                                "Validation failed",
+                                LocalDateTime.now(),
+                                errors);
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
+                return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGlobalException(
-            Exception ex, WebRequest request) {
+        @ExceptionHandler(Exception.class)
+        public ResponseEntity<ErrorResponse> handleGlobalException(
+                        Exception ex, WebRequest request) {
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "An unexpected error occurred",
-                LocalDateTime.now(),
-                request.getDescription(false));
+                ErrorResponse errorResponse = new ErrorResponse(
+                                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                                "An unexpected error occurred",
+                                LocalDateTime.now(),
+                                request.getDescription(false));
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+                return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-    // Authentication-specific exception handlers
+        @ExceptionHandler(UserAlreadyExistsException.class)
+        public ResponseEntity<ErrorResponse> handleUserAlreadyExistsException(
+                        UserAlreadyExistsException ex, WebRequest request) {
 
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> handleUserAlreadyExistsException(
-            UserAlreadyExistsException ex, WebRequest request) {
+                ErrorResponse errorResponse = new ErrorResponse(
+                                HttpStatus.CONFLICT.value(),
+                                ex.getMessage(),
+                                LocalDateTime.now(),
+                                request.getDescription(false));
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.CONFLICT.value(),
-                ex.getMessage(),
-                LocalDateTime.now(),
-                request.getDescription(false));
+                return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+        }
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
-    }
+        @ExceptionHandler(AuthenticationFailedException.class)
+        public ResponseEntity<AuthErrorResponse> handleAuthenticationFailedException(
+                        AuthenticationFailedException ex, WebRequest request) {
 
-    @ExceptionHandler(AuthenticationFailedException.class)
-    public ResponseEntity<AuthErrorResponse> handleAuthenticationFailedException(
-            AuthenticationFailedException ex, WebRequest request) {
+                AuthErrorResponse errorResponse = new AuthErrorResponse(
+                                HttpStatus.UNAUTHORIZED.value(),
+                                "Authentication failed",
+                                "AUTH_FAILED",
+                                LocalDateTime.now(),
+                                request.getDescription(false),
+                                "Please check your username and password");
 
-        AuthErrorResponse errorResponse = new AuthErrorResponse(
-                HttpStatus.UNAUTHORIZED.value(),
-                "Authentication failed",
-                "AUTH_FAILED",
-                LocalDateTime.now(),
-                request.getDescription(false),
-                "Please check your username and password");
+                return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+        }
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
-    }
+        @ExceptionHandler(InvalidTokenException.class)
+        public ResponseEntity<AuthErrorResponse> handleInvalidTokenException(
+                        InvalidTokenException ex, WebRequest request) {
 
-    @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<AuthErrorResponse> handleInvalidTokenException(
-            InvalidTokenException ex, WebRequest request) {
+                AuthErrorResponse errorResponse = new AuthErrorResponse(
+                                HttpStatus.UNAUTHORIZED.value(),
+                                "Invalid or expired token",
+                                "TOKEN_INVALID",
+                                LocalDateTime.now(),
+                                request.getDescription(false),
+                                "Please login again to get a new token");
 
-        AuthErrorResponse errorResponse = new AuthErrorResponse(
-                HttpStatus.UNAUTHORIZED.value(),
-                "Invalid or expired token",
-                "TOKEN_INVALID",
-                LocalDateTime.now(),
-                request.getDescription(false),
-                "Please login again to get a new token");
+                return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+        }
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
-    }
+        @ExceptionHandler(InvalidAuthenticationDataException.class)
+        public ResponseEntity<AuthErrorResponse> handleInvalidAuthenticationDataException(
+                        InvalidAuthenticationDataException ex, WebRequest request) {
 
-    @ExceptionHandler(InvalidAuthenticationDataException.class)
-    public ResponseEntity<AuthErrorResponse> handleInvalidAuthenticationDataException(
-            InvalidAuthenticationDataException ex, WebRequest request) {
+                AuthErrorResponse errorResponse = new AuthErrorResponse(
+                                HttpStatus.BAD_REQUEST.value(),
+                                ex.getMessage(),
+                                "INVALID_AUTH_DATA",
+                                LocalDateTime.now(),
+                                request.getDescription(false),
+                                "Please provide valid authentication data");
 
-        AuthErrorResponse errorResponse = new AuthErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                ex.getMessage(),
-                "INVALID_AUTH_DATA",
-                LocalDateTime.now(),
-                request.getDescription(false),
-                "Please provide valid authentication data");
+                return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
+        @ExceptionHandler({ BadCredentialsException.class, UsernameNotFoundException.class })
+        public ResponseEntity<AuthErrorResponse> handleAuthenticationExceptions(
+                        RuntimeException ex, WebRequest request) {
 
-    @ExceptionHandler({ BadCredentialsException.class, UsernameNotFoundException.class })
-    public ResponseEntity<AuthErrorResponse> handleAuthenticationExceptions(
-            RuntimeException ex, WebRequest request) {
+                AuthErrorResponse errorResponse = new AuthErrorResponse(
+                                HttpStatus.UNAUTHORIZED.value(),
+                                "Invalid credentials",
+                                "INVALID_CREDENTIALS",
+                                LocalDateTime.now(),
+                                request.getDescription(false),
+                                "Please check your username and password");
 
-        AuthErrorResponse errorResponse = new AuthErrorResponse(
-                HttpStatus.UNAUTHORIZED.value(),
-                "Invalid credentials",
-                "INVALID_CREDENTIALS",
-                LocalDateTime.now(),
-                request.getDescription(false),
-                "Please check your username and password");
+                return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+        }
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
-    }
+        @ExceptionHandler(AuthenticationException.class)
+        public ResponseEntity<AuthErrorResponse> handleSpringAuthenticationException(
+                        AuthenticationException ex, WebRequest request) {
 
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<AuthErrorResponse> handleSpringAuthenticationException(
-            AuthenticationException ex, WebRequest request) {
+                AuthErrorResponse errorResponse = new AuthErrorResponse(
+                                HttpStatus.UNAUTHORIZED.value(),
+                                "Authentication failed",
+                                "AUTH_EXCEPTION",
+                                LocalDateTime.now(),
+                                request.getDescription(false),
+                                "Please try again or contact support if the problem persists");
 
-        AuthErrorResponse errorResponse = new AuthErrorResponse(
-                HttpStatus.UNAUTHORIZED.value(),
-                "Authentication failed",
-                "AUTH_EXCEPTION",
-                LocalDateTime.now(),
-                request.getDescription(false),
-                "Please try again or contact support if the problem persists");
+                return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+        }
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
-    }
+        @ExceptionHandler(IllegalArgumentException.class)
+        public ResponseEntity<ErrorResponse> handleIllegalArgumentException(
+                        IllegalArgumentException ex, WebRequest request) {
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(
-            IllegalArgumentException ex, WebRequest request) {
+                ErrorResponse errorResponse = new ErrorResponse(
+                                HttpStatus.BAD_REQUEST.value(),
+                                ex.getMessage(),
+                                LocalDateTime.now(),
+                                request.getDescription(false));
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                ex.getMessage(),
-                LocalDateTime.now(),
-                request.getDescription(false));
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
+                return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
 }

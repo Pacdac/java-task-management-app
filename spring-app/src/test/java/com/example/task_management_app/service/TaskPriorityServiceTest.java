@@ -34,7 +34,6 @@ class TaskPriorityServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Setup test TaskPriority entity
         testTaskPriority = new TaskPriority();
         testTaskPriority.setId(1);
         testTaskPriority.setName("High");
@@ -43,7 +42,6 @@ class TaskPriorityServiceTest {
         testTaskPriority.setColor("#FF0000");
         testTaskPriority.setDisplayOrder(1);
 
-        // Setup test TaskPriorityDTO
         testTaskPriorityDTO = new TaskPriorityDTO();
         testTaskPriorityDTO.setId(1);
         testTaskPriorityDTO.setName("High");
@@ -212,7 +210,6 @@ class TaskPriorityServiceTest {
 
         taskPriorityService.deleteTaskPriority(1);
 
-        // No exception should be thrown
     }
 
     @Test

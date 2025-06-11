@@ -55,7 +55,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[0].firstName").value("Integration"))
                 .andExpect(jsonPath("$[0].lastName").value("Test"))
                 .andExpect(jsonPath("$[0].role").value("USER"))
-                .andExpect(jsonPath("$[0].password").doesNotExist()); // Password should not be in response
+                .andExpect(jsonPath("$[0].password").doesNotExist());
     }
 
     @Test

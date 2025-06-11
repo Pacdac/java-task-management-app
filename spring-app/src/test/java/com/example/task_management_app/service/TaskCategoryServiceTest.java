@@ -34,14 +34,12 @@ class TaskCategoryServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Setup test TaskCategory entity
         testTaskCategory = new TaskCategory();
         testTaskCategory.setId(1);
         testTaskCategory.setName("Work");
         testTaskCategory.setDescription("Work related tasks");
         testTaskCategory.setColor("#0000FF");
 
-        // Setup test TaskCategoryDTO
         testTaskCategoryDTO = new TaskCategoryDTO();
         testTaskCategoryDTO.setId(1);
         testTaskCategoryDTO.setName("Work");

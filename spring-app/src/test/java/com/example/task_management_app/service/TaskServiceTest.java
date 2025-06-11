@@ -60,7 +60,6 @@ class TaskServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Setup test entities
         testUser = new User();
         testUser.setId(1);
         testUser.setUsername("testuser");
@@ -224,7 +223,6 @@ class TaskServiceTest {
 
         taskService.deleteTask(1);
 
-        // No exception should be thrown
     }
 
     @Test

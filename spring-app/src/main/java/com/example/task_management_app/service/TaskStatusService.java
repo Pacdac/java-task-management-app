@@ -64,7 +64,7 @@ public class TaskStatusService {
      */
     @Transactional
     public TaskStatusDTO createTaskStatus(TaskStatusDTO taskStatusDTO) {
-        // Check if status name already exists
+
         if (taskStatusRepository.existsByName(taskStatusDTO.getName())) {
             throw new IllegalArgumentException(
                     "Task status with name '" + taskStatusDTO.getName() + "' already exists");
@@ -87,14 +87,12 @@ public class TaskStatusService {
         TaskStatus existingTaskStatus = taskStatusRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task status not found with id: " + id));
 
-        // Check if name is being changed and already exists
         if (!existingTaskStatus.getName().equals(taskStatusDTO.getName()) &&
                 taskStatusRepository.existsByName(taskStatusDTO.getName())) {
             throw new IllegalArgumentException(
                     "Task status with name '" + taskStatusDTO.getName() + "' already exists");
         }
 
-        // Update fields
         existingTaskStatus.setName(taskStatusDTO.getName());
         existingTaskStatus.setDescription(taskStatusDTO.getDescription());
         existingTaskStatus.setColor(taskStatusDTO.getColor());
@@ -140,7 +138,6 @@ public class TaskStatusService {
     private TaskStatus convertToEntity(TaskStatusDTO taskStatusDTO) {
         TaskStatus taskStatus = new TaskStatus();
 
-        // Don't set ID for new task statuses, let the database generate it
         if (taskStatusDTO.getId() != null) {
             taskStatus.setId(taskStatusDTO.getId());
         }

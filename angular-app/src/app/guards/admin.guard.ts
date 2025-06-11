@@ -10,7 +10,6 @@ export const adminGuard: CanActivateFn = (route, state) => {
     return true;
   }
 
-  // Redirect to login if not logged in, or to home if logged in but not admin
   const redirectTo = authService.isLoggedIn() ? '/' : '/login';
   return router.parseUrl(redirectTo);
 };

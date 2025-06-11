@@ -22,7 +22,7 @@ export interface Task {
 export class TaskService {
   private apiUrl = 'http://localhost:8080/api/tasks';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getTasks(): Observable<Task[]> {
     return this.http
@@ -70,7 +70,7 @@ export class TaskService {
       statusId: task.statusId || this.getStatusIdFromName(task.statusName) || 1,
       statusName: task.statusName,
       dueDate: task.dueDate || undefined,
-      priorityId: task.priorityId || 3, // Default to medium priority ID
+      priorityId: task.priorityId || 3,
       priorityName: task.priorityName,
       priorityValue: task.priorityValue,
       userId: task.userId ? Number(task.userId) : undefined,

@@ -46,7 +46,7 @@ public class User {
 
     @NotBlank
     @Column(name = "role", nullable = false)
-    private String role = "USER"; // Default role
+    private String role = "USER";
 
     @Column(name = "created_at")
     private OffsetDateTime createdAt;

@@ -140,7 +140,6 @@ public class TaskCategoryService {
     private TaskCategory convertToEntity(TaskCategoryDTO taskCategoryDTO) {
         TaskCategory taskCategory = new TaskCategory();
 
-        // Don't set ID for new task categories, let the database generate it
         if (taskCategoryDTO.getId() != null) {
             taskCategory.setId(taskCategoryDTO.getId());
         }

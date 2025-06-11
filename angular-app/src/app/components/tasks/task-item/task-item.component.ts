@@ -21,15 +21,14 @@ export class TaskItemComponent {
   @Output() editTask = new EventEmitter<Task>();
   @Output() deleteTask = new EventEmitter<number | undefined>();
 
-  // Edit mode state
   isEditing = false;
   editForm: Task = {} as Task;
 
   constructor(
     public statusService: StatusService,
     public priorityService: PriorityService
-  ) {}
-  // Helper methods for template
+  ) { }
+
   getPriorityString(priorityId: number): string {
     const priority = this.priorityService.getPriorityById(priorityId);
     return priority ? priority.name.toLowerCase() : 'unknown';
@@ -50,15 +49,12 @@ export class TaskItemComponent {
   }
   onEdit(): void {
     this.isEditing = true;
-    // Create a copy of the task for editing
     this.editForm = {
       ...this.task,
       dueDate: this.task.dueDate
         ? new Date(this.task.dueDate).toISOString().split('T')[0]
         : '',
-      // Ensure statusId is properly set
       statusId: this.task.statusId || 1,
-      // Ensure priorityId is properly set as number
       priorityId: Number(this.task.priorityId) || 3,
     };
   }
@@ -70,11 +66,9 @@ export class TaskItemComponent {
 
   onSaveEdit(): void {
     if (this.editForm.title.trim() && this.editForm.description.trim()) {
-      // Convert date back to proper format if needed
       const updatedTask: Task = {
         ...this.editForm,
         dueDate: this.editForm.dueDate || undefined,
-        // Ensure statusId and priorityId are properly set as numbers
         statusId: Number(this.editForm.statusId) || 1,
         priorityId: Number(this.editForm.priorityId) || 3,
       };

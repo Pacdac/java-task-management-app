@@ -68,7 +68,7 @@ public class UserService {
      */
     @Transactional
     public UserDTO createUser(UserDTO userDTO) {
-        // Check if username or email already exists
+
         if (userRepository.existsByUsername(userDTO.getUsername())) {
             throw new UserAlreadyExistsException("Username already exists: " + userDTO.getUsername());
         }
@@ -79,7 +79,6 @@ public class UserService {
 
         User user = convertToEntity(userDTO);
 
-        // Encode password
         user.setPasswordHash(passwordEncoder.encode(userDTO.getPassword()));
 
         User savedUser = userRepository.save(user);
@@ -98,28 +97,24 @@ public class UserService {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
-        // Check if username is changed and already exists
         if (!existingUser.getUsername().equals(userDTO.getUsername()) &&
                 userRepository.existsByUsername(userDTO.getUsername())) {
             throw new IllegalArgumentException("Username already exists");
         }
 
-        // Check if email is changed and already exists
         if (!existingUser.getEmail().equals(userDTO.getEmail()) &&
                 userRepository.existsByEmail(userDTO.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
-        } // Update fields
+        }
         existingUser.setUsername(userDTO.getUsername());
         existingUser.setEmail(userDTO.getEmail());
         existingUser.setFirstName(userDTO.getFirstName());
         existingUser.setLastName(userDTO.getLastName());
 
-        // Update role if provided
         if (userDTO.getRole() != null && !userDTO.getRole().isEmpty()) {
             existingUser.setRole(userDTO.getRole());
         }
 
-        // Update password if provided
         if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
             existingUser.setPasswordHash(passwordEncoder.encode(userDTO.getPassword()));
         }
@@ -157,7 +152,6 @@ public class UserService {
         dto.setRole(user.getRole());
         dto.setCreatedAt(user.getCreatedAt());
         dto.setUpdatedAt(user.getUpdatedAt());
-        // Don't include password in DTO for security
         return dto;
     }
 
@@ -170,7 +164,6 @@ public class UserService {
     private User convertToEntity(UserDTO userDTO) {
         User user = new User();
 
-        // Don't set ID for new users, let the database generate it
         if (userDTO.getId() != null) {
             user.setId(userDTO.getId());
         }
@@ -180,7 +173,6 @@ public class UserService {
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
 
-        // Set role if provided, otherwise default to "USER"
         if (userDTO.getRole() != null && !userDTO.getRole().isEmpty()) {
             user.setRole(userDTO.getRole());
         } else {

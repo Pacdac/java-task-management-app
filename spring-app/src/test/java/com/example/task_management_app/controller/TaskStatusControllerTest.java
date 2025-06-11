@@ -53,11 +53,9 @@ class TaskStatusControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Clean up existing data
         taskStatusRepository.deleteAll();
         userRepository.deleteAll();
 
-        // Create test user
         testUser = new User();
         testUser.setUsername("testuser");
         testUser.setEmail("test@example.com");
@@ -65,7 +63,6 @@ class TaskStatusControllerTest {
         testUser.setRole("USER");
         testUser = userRepository.save(testUser);
 
-        // Create test admin
         testAdmin = new User();
         testAdmin.setUsername("admin");
         testAdmin.setEmail("admin@example.com");
@@ -73,7 +70,6 @@ class TaskStatusControllerTest {
         testAdmin.setRole("ADMIN");
         testAdmin = userRepository.save(testAdmin);
 
-        // Create test task status
         testTaskStatus = new TaskStatus();
         testTaskStatus.setName("In Progress");
         testTaskStatus.setDescription("Task is being worked on");
@@ -84,7 +80,6 @@ class TaskStatusControllerTest {
     @Test
     @WithMockUser
     void getAllTaskStatuses_ShouldReturnAllStatuses() throws Exception {
-        // Create additional test status
         TaskStatus anotherStatus = new TaskStatus();
         anotherStatus.setName("Completed");
         anotherStatus.setDescription("Task is completed");
@@ -166,7 +161,7 @@ class TaskStatusControllerTest {
     @WithMockUser(roles = "ADMIN")
     void createTaskStatus_ShouldReturnBadRequest_WhenNameIsEmpty() throws Exception {
         TaskStatusDTO newTaskStatusDTO = new TaskStatusDTO();
-        newTaskStatusDTO.setName(""); // Empty name
+        newTaskStatusDTO.setName("");
         newTaskStatusDTO.setDescription("Task is under review");
         newTaskStatusDTO.setColor("#FFFF00");
 
@@ -221,7 +216,6 @@ class TaskStatusControllerTest {
         mockMvc.perform(delete("/api/task-statuses/{id}", testTaskStatus.getId()))
                 .andExpect(status().isNoContent());
 
-        // Verify status was deleted
         mockMvc.perform(get("/api/task-statuses/{id}", testTaskStatus.getId()))
                 .andExpect(status().isNotFound());
     }

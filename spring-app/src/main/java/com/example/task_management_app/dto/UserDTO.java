@@ -24,7 +24,6 @@ public class UserDTO {
     @Size(max = 100, message = "Email must be less than 100 characters")
     private String email;
 
-    // Password field used for creation/updates
     private String password;
 
     @Size(max = 50, message = "First name must be less than 50 characters")

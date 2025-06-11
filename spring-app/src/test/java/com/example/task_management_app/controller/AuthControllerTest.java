@@ -84,7 +84,7 @@ class AuthControllerTest {
     @Test
     void register_ShouldReturnBadRequest_WhenUsernameIsEmpty() throws Exception {
         RegistrationDTO registrationDTO = new RegistrationDTO();
-        registrationDTO.setUsername(""); // Empty username
+        registrationDTO.setUsername("");
         registrationDTO.setEmail("newuser@example.com");
         registrationDTO.setPassword("password123");
         registrationDTO.setFirstName("New");
@@ -102,7 +102,7 @@ class AuthControllerTest {
     void register_ShouldReturnBadRequest_WhenEmailIsInvalid() throws Exception {
         RegistrationDTO registrationDTO = new RegistrationDTO();
         registrationDTO.setUsername("newuser");
-        registrationDTO.setEmail("invalid-email"); // Invalid email format
+        registrationDTO.setEmail("invalid-email");
         registrationDTO.setPassword("password123");
         registrationDTO.setFirstName("New");
         registrationDTO.setLastName("User");
@@ -120,7 +120,7 @@ class AuthControllerTest {
         RegistrationDTO registrationDTO = new RegistrationDTO();
         registrationDTO.setUsername("newuser");
         registrationDTO.setEmail("newuser@example.com");
-        registrationDTO.setPassword(""); // Empty password
+        registrationDTO.setPassword("");
         registrationDTO.setFirstName("New");
         registrationDTO.setLastName("User");
 
@@ -135,7 +135,7 @@ class AuthControllerTest {
     @Test
     void register_ShouldReturnConflict_WhenUsernameAlreadyExists() throws Exception {
         RegistrationDTO registrationDTO = new RegistrationDTO();
-        registrationDTO.setUsername("testuser"); // Username already exists
+        registrationDTO.setUsername("testuser");
         registrationDTO.setEmail("different@example.com");
         registrationDTO.setPassword("password123");
         registrationDTO.setFirstName("New");
@@ -153,7 +153,7 @@ class AuthControllerTest {
     void register_ShouldReturnConflict_WhenEmailAlreadyExists() throws Exception {
         RegistrationDTO registrationDTO = new RegistrationDTO();
         registrationDTO.setUsername("newuser");
-        registrationDTO.setEmail("test@example.com"); // Email already exists
+        registrationDTO.setEmail("test@example.com");
         registrationDTO.setPassword("password123");
         registrationDTO.setFirstName("New");
         registrationDTO.setLastName("User");
@@ -188,7 +188,7 @@ class AuthControllerTest {
     void login_ShouldReturnUnauthorized_WhenInvalidCredentialsProvided() throws Exception {
         AuthRequestDTO authRequestDTO = new AuthRequestDTO();
         authRequestDTO.setUsername("testuser");
-        authRequestDTO.setPassword("wrongpassword"); // Wrong password
+        authRequestDTO.setPassword("wrongpassword");
 
         String jsonContent = objectMapper.writeValueAsString(authRequestDTO);
 
@@ -201,7 +201,7 @@ class AuthControllerTest {
     @Test
     void login_ShouldReturnUnauthorized_WhenUserDoesNotExist() throws Exception {
         AuthRequestDTO authRequestDTO = new AuthRequestDTO();
-        authRequestDTO.setUsername("nonexistent"); // User does not exist
+        authRequestDTO.setUsername("nonexistent");
         authRequestDTO.setPassword("password123");
 
         String jsonContent = objectMapper.writeValueAsString(authRequestDTO);
@@ -215,7 +215,7 @@ class AuthControllerTest {
     @Test
     void login_ShouldReturnBadRequest_WhenUsernameIsEmpty() throws Exception {
         AuthRequestDTO authRequestDTO = new AuthRequestDTO();
-        authRequestDTO.setUsername(""); // Empty username
+        authRequestDTO.setUsername("");
         authRequestDTO.setPassword("password123");
 
         String jsonContent = objectMapper.writeValueAsString(authRequestDTO);
@@ -223,20 +223,20 @@ class AuthControllerTest {
         mockMvc.perform(post("/api/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContent))
-                .andExpect(status().is4xxClientError()); // Empty username will cause authentication failure
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
     void login_ShouldReturnBadRequest_WhenPasswordIsEmpty() throws Exception {
         AuthRequestDTO authRequestDTO = new AuthRequestDTO();
         authRequestDTO.setUsername("testuser");
-        authRequestDTO.setPassword(""); // Empty password
+        authRequestDTO.setPassword("");
 
         String jsonContent = objectMapper.writeValueAsString(authRequestDTO);
 
         mockMvc.perform(post("/api/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContent))
-                .andExpect(status().is4xxClientError()); // Empty password will cause authentication failure
+                .andExpect(status().is4xxClientError());
     }
 }

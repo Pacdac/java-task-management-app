@@ -23,11 +23,10 @@ export class PriorityManagementComponent implements OnInit {
   };
   isAdding = false;
 
-  constructor(private priorityService: PriorityService) {}
+  constructor(private priorityService: PriorityService) { }
 
   ngOnInit(): void {
     this.loadPriorities();
-    // Subscribe to priority changes
     this.priorityService.priorities$.subscribe((priorities) => {
       this.priorities = priorities;
     });
